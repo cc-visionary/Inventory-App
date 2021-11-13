@@ -38,9 +38,9 @@ app.use(
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cookieParser());
 
-// set the folder `public` as folder containing static assets
+// set the folder `build` as folder containing static assets
 // such as css, js, and image files
-app.use(express.static(path.resolve(__dirname, "../client/public")));
+app.use(express.static(path.resolve(__dirname, "./build")));
 
 // connects to the database
 db.connect();
@@ -71,7 +71,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/public", "index.html"));
+  res.sendFile(path.resolve(__dirname, "./build", "index.html"));
 });
 
 // binds the server to a specific port
