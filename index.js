@@ -66,12 +66,9 @@ app.use(
 // define the paths contained in `./routes/routes.js`
 app.use("/api", routes);
 
-// define paths for uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "./build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });
 
 // binds the server to a specific port
