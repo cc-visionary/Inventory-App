@@ -8,10 +8,11 @@ const bcrypt = require("bcrypt");
 const saltRounds = bcrypt.genSaltSync();
 
 const users = [
-
+    { username: "user", email: "user@email.net", password: "password", userType: "user"},
+    { username: "admin", email: "admin@email.net", password: "password", userType: "admin"},
 ]
 
-require("dotenv").config();
+require("dotenv").config({path: "../.env"});
 
 // import module from `../models/database.js`
 const db = require("../models/database.js");
