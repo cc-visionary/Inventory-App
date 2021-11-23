@@ -38,6 +38,7 @@ const UserController = {
     });
   },
 
+  // TODO: Refactor code result.result ambiguous or let it be
   postLogin: (req, res) => {
     const {
       email,
@@ -45,10 +46,10 @@ const UserController = {
     } = req.body
 
     db.findOne(User, {email: email}, (result) => {
-      bcrypt.compare(password, result.password, function(err, isEqual) {
+      bcrypt.compare(password, result.result.password, function(err, isEqual) {
         if(isEqual) {
-          req.session.user = result;
-          result.password = password;
+          req.session.user = result.result;
+          req.session.user.password = password;
           res.status(200).send("Login Success");
         } else {
           res.status(401).send("Invalid Credentials");
