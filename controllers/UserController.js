@@ -6,18 +6,19 @@ const User = require("../models/UserModel");
 
 // import bcrypt for encrypting the password by hashing
 const bcrypt = require("bcrypt");
-const saltRounds = bcrypt.genSaltSync();
+const saltRounds = 8;
 
 // import helper function defaultCallback from `../helpers/defaultCallback`
 const defaultCallback = require("../helpers/defaultCallback");
 
 // TODO: test functions
 const UserController = {
+
   postRegister: (req, res) => {
     bcrypt.genSalt(saltRounds, (err, salt) => {
       bcrypt.hash(req.body.password, salt, (err, hash) => {
         req.body.password = hash
-
+      
         const {
           username,
           email,
@@ -31,10 +32,10 @@ const UserController = {
           password,
           userType
         };
-    
+  
         db.insertOne(User, user, (result) => defaultCallback(res, result));
-      })
-    })
+      });
+    });
   },
 
   postLogin: (req, res) => {

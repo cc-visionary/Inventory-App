@@ -17,12 +17,31 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    
+    /* TEST GET ALL USERS
     UserService.getAllUsers()
       .then((res) => {
         const { success, result } = res.data;
         console.log(success);
         console.log(result);
       });
+    */
+    
+    /* TEST REGISTER
+    const user = {
+      username: "test_user",
+      email: "test@email.net",
+      password: "password",
+      userType: "user",
+    }
+
+    UserService.postRegister(user)
+      .then((res) => {
+        const { success, result } = res.data;
+        console.log(success);
+        console.log(result);
+      })
+    */
   }
 
   render() {
