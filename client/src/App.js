@@ -37,7 +37,7 @@ export default class App extends Component {
           </Switch>
           <Switch>
             <PublicRoute path="/" exact component={Login} />
-            <AdminRoute path="/admin" component={Inventory} />
+            <AdminRoute path="/admin" component={Admin} />
             <AdminRoute path="/users" component={Users} />
             <UserRoute path="/inventory" component={Inventory} />
           </Switch>
