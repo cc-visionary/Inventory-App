@@ -11,7 +11,7 @@ const saltRounds = 8;
 // import helper function defaultCallback from `../helpers/defaultCallback`
 const defaultCallback = require("../helpers/defaultCallback");
 
-// TODO: test functions
+// TODO: test patchUser
 const UserController = {
 
   postRegister: (req, res) => {
@@ -38,7 +38,7 @@ const UserController = {
     });
   },
 
-  // TODO: Refactor code result.result ambiguous or let it be
+  // ASK: do we refactor code result.result ambiguous or let it be
   postLogin: (req, res) => {
     const {
       email,
@@ -68,6 +68,7 @@ const UserController = {
     db.findMany(User, {}, (result) => defaultCallback(res, result));
   },
 
+  // ASK: params or query
   getUserByUsername: (req, res) => {
     const { username } = req.params;
 
@@ -75,6 +76,7 @@ const UserController = {
   },
 
   // TODO: bcrypt password change
+  // ASK: update by email or id (current: id)
   patchUser: (req, res) => {
     const {
       id, 
@@ -94,6 +96,7 @@ const UserController = {
     db.updateOne(User, { _id: id }, user, (result) => defaultCallback(res, result));
   },
 
+  // ASK: delete by id or email (current: id)
   deleteUser: (req, res) => {
     const { id } = req.params;
 

@@ -9,7 +9,8 @@ router.get('/users', UserController.getAllUsers);
 
 router.get('/users/:id', UserController.getUserByID);
 
-router.get('/users/:id', UserController.getUserByUsername);
+// ASK: params or query
+router.get('/users/username/:username', UserController.getUserByUsername);
 
 router.post('/users/register', UserController.postRegister)
 
