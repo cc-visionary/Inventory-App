@@ -18,14 +18,14 @@ export default class App extends Component {
 
   componentDidMount() {
     
-    /* TEST GET ALL USERS
+    
     UserService.getAllUsers()
       .then((res) => {
         const { success, result } = res.data;
         console.log(success);
         console.log(result);
-      });
-    */
+    });
+    
     
     /* TEST REGISTER
     const userRegister = {
