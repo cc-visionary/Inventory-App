@@ -40,11 +40,11 @@ const UserController = {
 
   postLogin: (req, res) => {
     const {
-      email,
+      username,
       password
     } = req.body
 
-    db.findOne(User, {email}, (result) => {
+    db.findOne(User, {username}, (result) => {
       bcrypt.compare(password, result.result.password, function(err, isEqual) {
         if(isEqual) {
           req.session.user = result.result;

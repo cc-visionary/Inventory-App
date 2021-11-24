@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+import UserService from '../services/UserService';
+
+import { setUserLocal } from '../utils/store';
+
 import loginImage from '../assets/images/login_image.svg';
 
 import '../assets/styles/pages/Login.css';
@@ -10,7 +14,20 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const onClick = () => {
-    console.log("Logging in!");
+    const user = {
+      username,
+      password
+    };
+
+    UserService.postLogin(user)
+      .then((res) => {
+        const { success, result } = res.data;
+        console.log(success);
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   return <div className="container">

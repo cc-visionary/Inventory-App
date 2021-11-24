@@ -8,8 +8,8 @@ const bcrypt = require("bcrypt");
 const saltRounds = bcrypt.genSaltSync();
 
 const users = [
-    { username: "user", email: "user@email.net", password: "password", userType: "user"},
-    { username: "admin", email: "admin@email.net", password: "password", userType: "admin"},
+    { username: "user", password: "password", userType: "user"},
+    { username: "admin", password: "password", userType: "admin"},
 ]
 
 require("dotenv").config({path: "../.env"});

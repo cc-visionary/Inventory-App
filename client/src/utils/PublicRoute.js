@@ -11,7 +11,7 @@ const PublicRoute = ({ component: Component, ...rest }) => (
       if (!getUserToken()) return <Component {...props} />;
       // check if user is an admin, if yes, then user will be redirected to admin page
       if (getUser().userType === 'admin') return <Redirect to={{ pathname: ADMIN_FALLBACK }} />;
-      // if user is customer, then user will be redirected to the customer page
+      // if user is user, then user will be redirected to the user page
       return <Redirect to={{ pathname: USER_FALLBACK }} />;
     }}
   />

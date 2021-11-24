@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently nodemon index.js \"cd client && npm run start\"",
-    "start": "node index.js"
+    "start": "node index.js",
+    "insert-default-data": "node ./helpers/insertDefaultData.js",
+    "reset-database": "node ./helpers/resetDatabase.js"
   },
   "author": "",
   "license": "ISC",
