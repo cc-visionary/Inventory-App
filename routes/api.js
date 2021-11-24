@@ -3,22 +3,20 @@ const router = express.Router();
 
 const UserController = require('../controllers/UserController');
 
+// TODO: test routes
+// Users API
 router.get('/users', UserController.getAllUsers);
 
-router.get('/users/:id', (req, res, next) => {
-  // get user
-});
+router.get('/users/:id', UserController.getUserByID);
 
-router.post('/users', (req, res, next) => {
-  // create new user
-});
+router.get('/users/username/:username', UserController.getUserByUsername);
 
-router.put('/users/:id', (req, res, next) => {
-  // update user
-});
+router.post('/users/register', UserController.postRegister)
 
-router.delete('/users/:id', (req, res, next) => {
-  // delete user
-});
+router.post('/users/login', UserController.postLogin)
+
+router.patch('/users', UserController.patchUser)
+
+router.delete('/users/:id', UserController.deleteUser)
 
 module.exports = router;

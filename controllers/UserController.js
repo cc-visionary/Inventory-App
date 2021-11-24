@@ -6,19 +6,97 @@ const User = require("../models/UserModel");
 
 // import bcrypt for encrypting the password by hashing
 const bcrypt = require("bcrypt");
-const saltRounds = bcrypt.genSaltSync();
+const saltRounds = 8;
 
 // import helper function defaultCallback from `../helpers/defaultCallback`
 const defaultCallback = require("../helpers/defaultCallback");
 
+// TODO: test patchUser
 const UserController = {
+
+  postRegister: (req, res) => {
+    bcrypt.genSalt(saltRounds, (err, salt) => {
+      bcrypt.hash(req.body.password, salt, (err, hash) => {
+        req.body.password = hash
+      
+        const {
+          username,
+          email,
+          password,
+          userType
+        } = req.body;
+    
+        const user = {
+          username,
+          email,
+          password,
+          userType
+        };
+  
+        db.insertOne(User, user, (result) => defaultCallback(res, result));
+      });
+    });
+  },
+
+  postLogin: (req, res) => {
+    const {
+      email,
+      password
+    } = req.body
+
+    db.findOne(User, {email}, (result) => {
+      bcrypt.compare(password, result.result.password, function(err, isEqual) {
+        if(isEqual) {
+          req.session.user = result.result;
+          req.session.user.password = password;
+          res.status(200).send("Login Success");
+        } else {
+          res.status(401).send("Invalid Credentials");
+        }
+      });
+    });
+  },
+
+  getUserByID: (req, res) => {
+    const { id } = req.params;
+
+    db.findById(User, id, (result) => defaultCallback(res, result));
+  },
+
   getAllUsers: (req, res) => {
     db.findMany(User, {}, (result) => defaultCallback(res, result));
   },
+
   getUserByUsername: (req, res) => {
     const { username } = req.params;
 
     db.findOne(User, { username }, (result) => defaultCallback(res, result));
+  },
+
+  // TODO: bcrypt password change
+  patchUser: (req, res) => {
+    const {
+      id, 
+      username,
+      email,
+      password,
+      userType,
+    } = req.body;
+
+    const user = {
+      username,
+      email,
+      password,
+      userType
+    };
+
+    db.updateOne(User, { _id: id }, user, (result) => defaultCallback(res, result));
+  },
+
+  deleteUser: (req, res) => {
+    const { id } = req.params;
+
+    db.deleteOne(User, { _id: id }, (result) => defaultCallback(res, result));
   },
 };
 /*
