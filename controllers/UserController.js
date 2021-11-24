@@ -38,14 +38,13 @@ const UserController = {
     });
   },
 
-  // ASK: do we refactor code result.result ambiguous or let it be
   postLogin: (req, res) => {
     const {
       email,
       password
     } = req.body
 
-    db.findOne(User, {email: email}, (result) => {
+    db.findOne(User, {email}, (result) => {
       bcrypt.compare(password, result.result.password, function(err, isEqual) {
         if(isEqual) {
           req.session.user = result.result;
@@ -68,7 +67,6 @@ const UserController = {
     db.findMany(User, {}, (result) => defaultCallback(res, result));
   },
 
-  // ASK: params or query
   getUserByUsername: (req, res) => {
     const { username } = req.params;
 
@@ -76,7 +74,6 @@ const UserController = {
   },
 
   // TODO: bcrypt password change
-  // ASK: update by email or id (current: id)
   patchUser: (req, res) => {
     const {
       id, 
@@ -96,7 +93,6 @@ const UserController = {
     db.updateOne(User, { _id: id }, user, (result) => defaultCallback(res, result));
   },
 
-  // ASK: delete by id or email (current: id)
   deleteUser: (req, res) => {
     const { id } = req.params;
 

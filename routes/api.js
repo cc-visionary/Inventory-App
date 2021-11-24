@@ -9,14 +9,13 @@ router.get('/users', UserController.getAllUsers);
 
 router.get('/users/:id', UserController.getUserByID);
 
-// ASK: params or query
 router.get('/users/username/:username', UserController.getUserByUsername);
 
 router.post('/users/register', UserController.postRegister)
 
 router.post('/users/login', UserController.postLogin)
 
-router.patch('/users/:id', UserController.patchUser)
+router.patch('/users', UserController.patchUser)
 
 router.delete('/users/:id', UserController.deleteUser)
 
