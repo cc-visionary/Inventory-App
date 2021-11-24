@@ -76,6 +76,17 @@ const database = {
       return callback(success(result));
   });
   },
+  /* 
+    searches for a single document in the model `model` based on the contents of variable `id` 
+    callback function is called when the database has finished the execution of findMany() function
+  */
+  findById: (model, id, callback) => {
+    model.findById(id, (error, result) => {
+      if(error) return callback(fail(error));
+      console.log('Requested data from ' + model.collection.name + ' collection ');
+      return callback(success(result));
+  });
+  },
   /* deletes a single document in the model `model` based on the object `conditions` */
   deleteOne: (model, conditions, callback) => {
     model.deleteOne(conditions, (error, result) => {

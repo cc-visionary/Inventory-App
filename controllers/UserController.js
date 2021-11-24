@@ -59,9 +59,9 @@ const UserController = {
   },
 
   getUserByID: (req, res) => {
-    const { _id } = req.params;
+    const { id } = req.params;
 
-    db.findOne(User, { _id }, (result) => defaultCallback(res, result));
+    db.findById(User, id, (result) => defaultCallback(res, result));
   },
 
   getAllUsers: (req, res) => {

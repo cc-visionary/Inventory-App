@@ -43,7 +43,7 @@ export default class App extends Component {
       })
     */
       
-    /*
+    /* TEST LOGIN
     const userLogIn = {
       email: "test@email.net",
       password: "password",
