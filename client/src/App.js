@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { Footer, Navbar } from './components';
-import { Login } from './pages';
+import { Login, Admin, Users, Inventory } from './pages';
+import { AdminRoute, UserRoute, PublicRoute } from './utils';
 
 import UserService from './services/UserService';
 
@@ -31,15 +32,17 @@ export default class App extends Component {
       <Router>
         <div className="app">
           <Switch>
-            <Route path="/login" component={() => <></>} />
+            <Route path="/" exact component={() => <></>} />
             <Route path="/" component={Navbar} />
           </Switch>
           <Switch>
-            <Route path="/login" component={Login } />
-            <Route path="/" component={() => <></>} />
+            <PublicRoute path="/" exact component={Login} />
+            <AdminRoute path="/admin" component={Inventory} />
+            <AdminRoute path="/users" component={Users} />
+            <UserRoute path="/inventory" component={Inventory} />
           </Switch>
           <Switch>
-            <Route path="/login" component={() => <></>} />
+            <Route path="/" exact component={() => <></>} />
             <Route path="/" component={Footer} />
           </Switch>
         </div>
