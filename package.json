@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently nodemon index.js \"cd client && npm run start\"",
-    "test": "jest --watch --verbose ./tests --forceExit",
-    "test:ci": "jest --ci --reporters='default' --reporters='./tests/github-actions-reporter' --verbose ./tests --forceExit",
+    "test": "jest --silent --verbose ./tests --forceExit",
+    "test:ci": "jest --ci --reporters='default' --reporters='./tests/github-actions-reporter' --silent --verbose ./tests --forceExit",
     "start": "node index.js",
     "insert-default-data": "node ./helpers/insertDefaultData.js",
     "reset-database": "node ./helpers/resetDatabase.js"
