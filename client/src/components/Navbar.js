@@ -1,5 +1,6 @@
 import React from 'react';
-import UserService from '../services/UserService';
+
+import { UserService } from '../services';
 import { getUser, removeLocalUser } from '../utils/store';
 
 import '../assets/styles/components/Navbar.css';
@@ -16,8 +17,6 @@ const Navbar = () => {
         } 
       })
   }
-
-  console.log(window.location.pathname)
 
   return <div id="navbar">
     <div className="left" />

@@ -16,22 +16,23 @@ const { response } = require("express");
 const UserController = {
 
   postRegister: (req, res) => {
-    bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-      req.body.password = hash
+    const password = Math.random().toString(36).slice(2);
+
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      const hashed_password = hash;
     
       const {
         username,
-        password,
         userType
       } = req.body;
   
       const user = {
         username,
-        password,
-        userType
+        password: hashed_password,
+        userType: userType == null ? "user" : userType
       };
 
-      db.insertOne(User, user, (result) => defaultCallback(res, result));
+      db.insertOne(User, user, (result) => defaultCallback(res, {...result, password}));
     });
   },
 
@@ -119,9 +120,9 @@ const UserController = {
   },
 
   deleteUser: (req, res) => {
-    const { id } = req.params;
+    const { username } = req.params;
 
-    db.deleteOne(User, { _id: id }, (result) => defaultCallback(res, result));
+    db.deleteOne(User, { username }, (result) => defaultCallback(res, result));
   },
 };
 /*

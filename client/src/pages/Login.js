@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import UserService from '../services/UserService';
-
+import { UserService } from '../services';
 import { setUserLocal } from '../utils/store';
 
-import loginImage from '../assets/images/login_image.svg';
+import loginImage from '../assets/images/Login Image.svg';
 
 import '../assets/styles/pages/Login.css';
 
