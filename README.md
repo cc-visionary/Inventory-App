@@ -18,6 +18,7 @@ You will only have to do these once when you are setting up for development
 1. Open a new instance of command line
 2. Enter the command `npm i`.
 3. Enter the command `npm run start`.
+5. You can now access the front-end (to see the website) through `http://localhost:3000/`
 
 
 ## Default Credentials
