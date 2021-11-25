@@ -21,7 +21,7 @@ beforeAll(() => {
 
 // Delete test users in database after testing
 afterAll(() => {
-  db.deleteOne(User, {username: "test_user_0"}, (res) => {});
+  // db.deleteOne(User, {username: "test_user_0"}, (res) => {});
   db.deleteOne(User, {username: "test_user_1"}, (res) => {});
 });
 
@@ -48,17 +48,19 @@ describe('GET users', function() {
 
 // Unit Test 2: POST requests
 describe('POST users', function() {
-  it('register a user', (done) => {
+  /*
+    it('register a user', (done) => {
     request(app)
       .post('/api/users/register')
       .send({username: 'test_user_0'})
       .expect(200, done)
   })
-
-  it('login user', (done) => {
+ */
+  
+  it('login admin', (done) => {
     request(app)
       .post('/api/users/login')
-      .send({username: 'test_user_1', password: 'password'})
+      .send({username: 'admin', password: 'password'})
       .expect(200, done)
   })
 });
