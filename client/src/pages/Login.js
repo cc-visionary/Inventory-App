@@ -35,7 +35,6 @@ const Login = () => {
         if(res.status === 200) {
           const user = {
             username,
-            password,
             userType: res.data.userType,
           }
           setUserLocal(user);
