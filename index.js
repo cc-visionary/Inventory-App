@@ -73,3 +73,5 @@ app.get("*", (req, res) => {
 
 // binds the server to a specific port
 app.listen(port, () => console.debug("app listening at port " + port));
+
+module.exports = app;
