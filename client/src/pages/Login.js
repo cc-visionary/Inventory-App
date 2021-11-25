@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import UserService from '../services/UserService';
 
@@ -14,7 +14,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   // calls this when logging in
-  const onClick = () => {
+  const onSignin = () => {
     const user = {
       username,
       password
@@ -57,16 +57,18 @@ const Login = () => {
         placeholder="Username"
         value={username} 
         onChange={(e) => setUsername(e.target.value)} 
+        onKeyPress={(e) => e.key === 'Enter' && onSignin()}
       />
       <input 
         type="password" 
         placeholder="Password"
         value={password} 
         onChange={(e) => setPassword(e.target.value)} 
+        onKeyPress={(e) => e.key === 'Enter' && onSignin()}
       />
       <p className="error-message">{errorMessage}</p>
       <img src={loginImage} alt="Login" />
-      <button onClick={() => onClick()}>Sign in</button>
+      <button onClick={() => onSignin()}>Sign in</button>
     </div>
   </div>
 }
