@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { AddAccount } from '../components';
+import { AddAccount, EditPassword } from '../components';
 import { UserService } from '../services';
 
 import editIcon from '../assets/images/Edit Icon.svg';
@@ -17,8 +17,11 @@ export default class Users extends Component {
       users: [],
       searchValue: '',
       count: 0,
-      modalFlag: false,
+      addAccountVisible: false,
+      editPasswordVisible: false,
       addAccountError: '',
+      editPasswordError: '',
+      toBeEdited: null,
     }
   }
 
@@ -34,26 +37,61 @@ export default class Users extends Component {
       })
   }
 
-  handleSearch(value) {
-    this.setState({ searchValue: value });
-  }
+  onEdit(previousPassword, newPassword, confirmPassword) {
+    const { toBeEdited } = this.state;
 
-  onEdit() {
-    console.log("Edit");
+    if(toBeEdited != null) {
+      if(previousPassword === '' || previousPassword === null) {
+        this.setState({ editPasswordError: "Previous password is empty" });
+        return;
+      }
+
+      if(newPassword === '' || newPassword === null) {
+        this.setState({ editPasswordError: "New password is empty" });
+        return;
+      }
+
+      if(confirmPassword === '' || confirmPassword === null) {
+        this.setState({ editPasswordError: "Confirm password is empty" });
+        return;
+      }
+
+      if(newPassword !== confirmPassword) {
+        this.setState({ editPasswordError: "New password and confirm password doesn't match" });
+        return;
+      }
+
+      UserService.patchUser(toBeEdited, previousPassword, newPassword)
+        .then((res) => {
+          console.log(res.data);
+          this.setState({ editPasswordVisible: false, toBeEdited: null });
+        }) 
+        .catch((err) => {
+          const { data } = err.response;
+
+          this.setState({ editPasswordError: data });
+        })
+    }
   }
 
   onDelete(username) {
     const { users } = this.state;
 
-    UserService.deleteUser(username)
-      .then((res) => {
-        const index = users.indexOf(username);
-        const newUsers = [...users.slice(0, index), ...users.slice(index + 1)];
-        this.setState({ users: newUsers, count: newUsers.length });
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-      })
+    // asks for admin confirmation on whether or not to delete the user
+    Modal.confirm({
+      title: `Are you sure you want to delete ${username}`,
+      onOk: async () => {
+        UserService.deleteUser(username)
+        .then((res) => {
+          const index = users.indexOf(username);
+          const newUsers = [...users.slice(0, index), ...users.slice(index + 1)];
+          this.setState({ users: newUsers, count: newUsers.length });
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        })
+      }
+    });
   }
 
   addAccount(username) {
@@ -69,7 +107,7 @@ export default class Users extends Component {
         this.setState({ 
           users: [...this.state.users, username], 
           count: this.state.count + 1,
-          modalFlag: false,
+          addAccountVisible: false,
           addAccountError: "",
         })
 
@@ -89,15 +127,27 @@ export default class Users extends Component {
   }
 
   render() {
-    const { users, searchValue, count, modalFlag, addAccountError } = this.state;
+    const { users, searchValue, count, addAccountVisible, addAccountError, editPasswordVisible, editPasswordError, toBeEdited } = this.state;
 
     return <div id="users-page">
     <div className="header">
       <div>
-        <input className="search-input" placeholder="Search" onChange={(e) => this.handleSearch(e.target.value)} value={searchValue} />
-        <button className="add-account-button" onClick={() => this.setState({ modalFlag: true })}>Add Account</button>
+        <input 
+          className="search-input" 
+          placeholder="Search" 
+          onChange={(e) => this.setState({ searchValue: e.target.value })} 
+          value={searchValue} 
+        />
+        <button 
+          className="add-account-button" 
+          onClick={() => this.setState({ addAccountVisible: true })}
+        >
+          Add Account
+        </button>
       </div>
-      <div className="user-stats">Accounts: <span className="count">{count}</span></div>
+      <div className="user-stats">
+        Accounts: <span className="count">{count}</span>
+      </div>
     </div>
     <table>
       <thead>
@@ -108,14 +158,22 @@ export default class Users extends Component {
       </thead>
       <tbody>
         {
+          // maps per user to the table
           users.filter((user) => user.includes(searchValue)).map((user) => (
               <tr>
                 <td>{user}</td>
                 <td>
-                  <button className="edit-button" onClick={() => this.onEdit()}>
+                  <button 
+                    className="edit-button" 
+                    onClick={() => this.setState({ editPasswordVisible: true, toBeEdited: user })}
+                  >
                     <img src={editIcon} alt="Edit" />
                   </button>
-                  <button className="delete-button" onClick={() => this.onDelete(user)}>
+                  <button 
+                    className="delete-button" 
+                    onClick={() => this.onDelete(user)} 
+                    disabled={user === "admin"}
+                  >
                     <img src={trashIcon} alt="Delete" />
                   </button>
                 </td>
@@ -126,10 +184,17 @@ export default class Users extends Component {
       </tbody>
     </table>
     <AddAccount 
-      visible={modalFlag} 
+      visible={addAccountVisible} 
       onOk={(username) => this.addAccount(username)} 
-      onCancel={() => this.setState({ modalFlag: false })} 
+      onCancel={() => this.setState({ addAccountVisible: false })} 
       errorMessage={addAccountError}
+    />
+    <EditPassword 
+      username={toBeEdited}
+      visible={editPasswordVisible}
+      onOk={(previousPassword, newPassword, confirmPassword) => this.onEdit(previousPassword, newPassword, confirmPassword)}
+      onCancel={() => this.setState({ editPasswordVisible: false })}
+      errorMessage={editPasswordError}
     />
   </div>
   }

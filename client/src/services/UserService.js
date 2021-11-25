@@ -9,6 +9,7 @@ const UserService = {
   postRegister: (username) => axios.post(`${USER_API_BASE_URL}/register`, { username }),
   postLogin: (user) => axios.post(`${USER_API_BASE_URL}/login`, user),
   postLogout: () => axios.post(`${USER_API_BASE_URL}/logout`),
+  patchUser: (username, previousPassword, newPassword) => axios.patch(`${USER_API_BASE_URL}`, {username, previousPassword, newPassword}), 
   deleteUser: (username) => axios.delete(`${USER_API_BASE_URL}/${username}`),
 }
 

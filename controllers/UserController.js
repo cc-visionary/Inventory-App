@@ -99,24 +99,37 @@ const UserController = {
     db.findOne(User, { username }, (result) => defaultCallback(res, result));
   },
 
-  // TODO: bcrypt password change
+  // mainly changes the password of the user
   patchUser: (req, res) => {
-    const {
-      id, 
+    const { 
       username,
-      email,
-      password,
-      userType,
+      previousPassword,
+      newPassword,
     } = req.body;
 
-    const user = {
-      username,
-      email,
-      password,
-      userType
-    };
+    db.findOne(User, {username}, (result) => {
+      const data = result.result;
 
-    db.updateOne(User, { _id: id }, user, (result) => defaultCallback(res, result));
+      if(data == null) {
+        // if no username matches the users 
+        res.status(401).send("Invalid Username");
+      } else {
+        bcrypt.compare(previousPassword, data.password, function(err, isEqual) {
+          if(isEqual) {
+            const user = {
+              username: data.username,
+              password: bcrypt.hashSync(newPassword, saltRounds),
+              userType: data.userType,
+            }
+
+            db.updateOne(User, { username }, user, (result) => res.status(200).send("Successfully updated the password"));
+          } else {
+            // if matches a user, but incorrect password
+            res.status(401).send("Previous password is incorrect");
+          }
+        });
+      }
+    });
   },
 
   deleteUser: (req, res) => {
