@@ -21,14 +21,12 @@ const UserController = {
     
       const {
         username,
-        email,
         password,
         userType
       } = req.body;
   
       const user = {
         username,
-        email,
         password,
         userType
       };
