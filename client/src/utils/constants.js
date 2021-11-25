@@ -1,6 +1,6 @@
 const LOGIN_FALLBACK = '/';
-const ADMIN_FALLBACK = '/admin';
-const USER_FALLBACK = '/user';
+const ADMIN_FALLBACK = '/users';
+const USER_FALLBACK = '/inventory';
 
 export { 
   LOGIN_FALLBACK,

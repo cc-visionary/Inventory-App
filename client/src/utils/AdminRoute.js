@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { getUser, getUserToken } from './store';
+import { getUser } from './store';
 import { LOGIN_FALLBACK, USER_FALLBACK } from './constants';
 
 const AdminRoute = ({ component: Component, ...rest }) => (
@@ -8,7 +8,7 @@ const AdminRoute = ({ component: Component, ...rest }) => (
     {...rest}
     render={(props) => {
       // checks if user is logged in
-      if (getUserToken()) {
+      if (getUser()) {
         // checks if user is a user, if he is, he'll be redirected to user page
         if (getUser().userType === 'user') {
           return (

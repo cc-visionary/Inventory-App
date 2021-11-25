@@ -9,17 +9,12 @@ export const getUser = () => {
   return null;
 };
 
-// return the token from the local storage
-export const getUserToken = () => localStorage.getItem('userToken') || null;
-
 // remove the token and user from the local storage
 export const removeLocalUser = () => {
-  localStorage.removeItem('userToken');
   localStorage.removeItem('user');
 };
 
 // set the token and user from the local storage
-export const setUserLocal = (token, user) => {
-  localStorage.setItem('userToken', token);
+export const setUserLocal = (user) => {
   localStorage.setItem('user', JSON.stringify(user));
 };

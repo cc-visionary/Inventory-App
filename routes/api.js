@@ -15,6 +15,8 @@ router.post('/users/register', UserController.postRegister)
 
 router.post('/users/login', UserController.postLogin)
 
+router.post('/users/logout', UserController.postLogout)
+
 router.patch('/users', UserController.patchUser)
 
 router.delete('/users/:id', UserController.deleteUser)

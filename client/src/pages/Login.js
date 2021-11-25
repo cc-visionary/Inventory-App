@@ -13,24 +13,43 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // calls this when logging in
   const onClick = () => {
     const user = {
       username,
       password
     };
 
+    if(username === '') {
+      setErrorMessage("Username is empty");
+      return;
+    }
+
+    if(password === '') {
+      setErrorMessage("Password is empty");
+      return;
+    }
+
     UserService.postLogin(user)
       .then((res) => {
-        const { success, result } = res.data;
-        console.log(success);
-        console.log(result);
+        if(res.status === 200) {
+          const user = {
+            username,
+            password,
+            userType: res.data.userType,
+          }
+          setUserLocal(user);
+          window.location.reload();
+        } 
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          setErrorMessage("Invalid username or password");  
+        }
       })
   }
 
-  return <div className="container">
+  return <div id="login-page">
     <div className="card">
       <p className="title">Login</p>
       <p className="sub-title">Welcome back!</p>
