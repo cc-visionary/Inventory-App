@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "concurrently nodemon index.js \"cd client && npm run start\"",
     "test": "jest --watch",
+    "test:ci": "jest --ci --reporters='default' --reporters='./github-actions-reporter'" ,
     "start": "node index.js",
     "insert-default-data": "node ./helpers/insertDefaultData.js",
     "reset-database": "node ./helpers/resetDatabase.js"
