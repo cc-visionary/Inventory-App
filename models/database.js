@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 
 const url = process.env.MONGODB_URL;
 
+console.log(url);
+
 // additional connection options
 const options = {
   useUnifiedTopology: true,
@@ -30,6 +32,9 @@ const database = {
       if(err) throw err;
       console.log('Connected to ' + url)
     });
+  },
+  disconnect: () => {
+    mongoose.connection.close();
   },
   dropCollection: (collection, callback) => {
     mongoose.connection.dropCollection(collection, (error, result) => {
@@ -73,6 +78,17 @@ const database = {
     model.find(query, projection, sort, (error, result) => {
       if(error) return callback(fail(error));
       console.log('Requested ' + result.length + ' data from ' + model.collection.name + ' collection ');
+      return callback(success(result));
+  });
+  },
+  /* 
+    searches for a single document in the model `model` based on the contents of variable `id` 
+    callback function is called when the database has finished the execution of findMany() function
+  */
+  findById: (model, id, callback) => {
+    model.findById(id, (error, result) => {
+      if(error) return callback(fail(error));
+      console.log('Requested data from ' + model.collection.name + ' collection ');
       return callback(success(result));
   });
   },

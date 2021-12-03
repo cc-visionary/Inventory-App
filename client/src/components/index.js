@@ -1,4 +1,5 @@
-import Footer from './Footer';
 import Navbar from './Navbar';
+import AddAccount from './AddAccount';
+import EditPassword from './EditPassword';
 
-export { Footer, Navbar };
+export { Navbar, AddAccount, EditPassword };

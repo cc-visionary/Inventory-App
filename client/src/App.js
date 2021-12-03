@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Footer, Navbar } from './components';
-import { Login } from './pages';
-
-import UserService from './services/UserService';
+import { Navbar } from './components';
+import { Login, Users, Inventory } from './pages';
+import { AdminRoute, UserRoute, PublicRoute } from './utils';
 
 import './assets/styles/App.css';
 
@@ -16,31 +15,19 @@ export default class App extends Component {
     };
   }
 
-  componentDidMount() {
-    UserService.getAllUsers()
-      .then((res) => {
-        const { success, result } = res.data;
-        console.log(success);
-        console.log(result);
-      });
-  }
-
   render() {
-
     return (
       <Router>
         <div className="app">
           <Switch>
-            <Route path="/login" component={() => <></>} />
-            <Route path="/" component={Navbar} />
-          </Switch>
-          <Switch>
-            <Route path="/login" component={Login } />
+            <AdminRoute path="/users" component={Navbar} />
+            <UserRoute path="/inventory" component={Navbar} />
             <Route path="/" component={() => <></>} />
           </Switch>
           <Switch>
-            <Route path="/login" component={() => <></>} />
-            <Route path="/" component={Footer} />
+            <AdminRoute path="/users" component={Users} />
+            <UserRoute path="/inventory" component={Inventory} />
+            <PublicRoute path="/" component={Login} />
           </Switch>
         </div>
       </Router>
