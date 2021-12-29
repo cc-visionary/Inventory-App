@@ -75,3 +75,5 @@ describe('DELETE users', function() {
       .expect(200, done)
   })
 });
+
+// TODO: Unit Test 4: PATCH requests
