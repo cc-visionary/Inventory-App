@@ -6,7 +6,7 @@ const Product = require("../models/ProductModel");
 
 // import helper function defaultCallback from `../helpers/defaultCallback`
 const defaultCallback = require("../helpers/defaultCallback");
-const auxiliaryController = require(`./auxiliaryController.js`);
+const auxiliaryController = require(`./AuxiliaryController.js`);
 
 const ProductController = {
 
