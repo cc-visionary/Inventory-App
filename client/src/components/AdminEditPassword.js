@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Modal, Input } from 'antd';
 
-const AddAccount = ({ username, errorMessage, visible, onOk, onCancel }) => {
+const AdminEditPassword = ({ username, errorMessage, visible, onOk, onCancel }) => {
   const [previousPassword, setPreviousPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -58,4 +58,4 @@ const AddAccount = ({ username, errorMessage, visible, onOk, onCancel }) => {
   )
 };
 
-export default AddAccount;
+export default AdminEditPassword;

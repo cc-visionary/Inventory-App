@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { AddAccount, EditPassword } from '../components';
+import { AddAccount, AdminEditPassword } from '../components';
 import { UserService } from '../services';
 
 import editIcon from '../assets/images/Edit Icon.svg';
@@ -189,7 +189,7 @@ export default class Users extends Component {
       onCancel={() => this.setState({ addAccountVisible: false })} 
       errorMessage={addAccountError}
     />
-    <EditPassword 
+    <AdminEditPassword 
       username={toBeEdited}
       visible={editPasswordVisible}
       onOk={(previousPassword, newPassword, confirmPassword) => this.onEdit(previousPassword, newPassword, confirmPassword)}
