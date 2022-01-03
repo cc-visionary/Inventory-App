@@ -39,7 +39,7 @@ export default class Users extends Component {
       })
   }
 
-  onEdit(previousPassword, newPassword, confirmPassword) {
+  onEdit(previousPassword, newPassword, confirmNewPassword) {
     const { toBeEdited } = this.state;
 
     if(toBeEdited != null) {
@@ -51,26 +51,24 @@ export default class Users extends Component {
       if(newPassword === '' || newPassword === null) {
         this.setState({ editPasswordError: "New password is empty" });
         return;
-      } else if(newPassword.length <= 6) {
-        this.setState({ editPasswordError: "New password has to be atleast 6 characters" });
-        return;
-      } else if(newPassword.length >= 30) {
-        this.setState({ editPasswordError: "New password has to be atmost 30 characters" });
-        return;
       }
 
-      if(confirmPassword === '' || confirmPassword === null) {
+      if(confirmNewPassword === '' || confirmNewPassword === null) {
         this.setState({ editPasswordError: "Confirm password is empty" });
         return;
-      } else if(confirmPassword.length <= 6) {
-        this.setState({ editPasswordError: "Confirm password has to be atleast 6 characters" });
-        return;
-      } else if(confirmPassword.length >= 30) {
-        this.setState({ editPasswordError: "Confirm password has to be atmost 30 characters" });
-        return;
       }
 
-      if(newPassword !== confirmPassword) {
+      if(previousPassword.length < 6 || newPassword.length < 6 || confirmNewPassword.length < 6) {
+        this.setState({ editPasswordError: "Password has to be atleast 6 characters" });
+        return 
+      }
+  
+      if(previousPassword.length > 30 || newPassword.length > 30 || confirmNewPassword.length > 30) {
+        this.setState({ editPasswordError: "Password has to be atmost 30 characters" });
+        return 
+      }
+
+      if(newPassword !== confirmNewPassword) {
         this.setState({ editPasswordError: "New password and confirm password doesn't match" });
         return;
       }
@@ -212,7 +210,7 @@ export default class Users extends Component {
     <EditPassword 
       username={toBeEdited}
       visible={editPasswordVisible}
-      onOk={(previousPassword, newPassword, confirmPassword) => this.onEdit(previousPassword, newPassword, confirmPassword)}
+      onOk={(previousPassword, newPassword, confirmNewPassword) => this.onEdit(previousPassword, newPassword, confirmNewPassword)}
       onCancel={() => this.setState({ editPasswordVisible: false })}
       errorMessage={editPasswordError}
     />
