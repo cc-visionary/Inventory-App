@@ -30,6 +30,8 @@ export default class Users extends Component {
       .then((res) => {
         const { result: users } = res.data;
         
+        console.log(users)
+
         this.setState({ users: users.map(user => user.username), count: users.length });
       })
       .catch((err) => {
@@ -49,10 +51,22 @@ export default class Users extends Component {
       if(newPassword === '' || newPassword === null) {
         this.setState({ editPasswordError: "New password is empty" });
         return;
+      } else if(newPassword.length <= 6) {
+        this.setState({ editPasswordError: "New password has to be atleast 6 characters" });
+        return;
+      } else if(newPassword.length >= 30) {
+        this.setState({ editPasswordError: "New password has to be atmost 30 characters" });
+        return;
       }
 
       if(confirmPassword === '' || confirmPassword === null) {
         this.setState({ editPasswordError: "Confirm password is empty" });
+        return;
+      } else if(confirmPassword.length <= 6) {
+        this.setState({ editPasswordError: "Confirm password has to be atleast 6 characters" });
+        return;
+      } else if(confirmPassword.length >= 30) {
+        this.setState({ editPasswordError: "Confirm password has to be atmost 30 characters" });
         return;
       }
 
@@ -97,6 +111,12 @@ export default class Users extends Component {
   addAccount(username) {
     if(username === '' || username === null) {
       this.setState({ addAccountError: "Username is empty" })
+      return;
+    } else if(username.length <= 6) {
+      this.setState({ addAccountError: "Username has to be atleast 6 characters" })
+      return;
+    } else if(username.length >= 30) {
+      this.setState({ addAccountError: "Username has to be atmost 30 characters" })
       return;
     }
 
