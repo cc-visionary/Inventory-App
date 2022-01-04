@@ -19,6 +19,6 @@ router.post('/users/logout', UserController.postLogout)
 
 router.patch('/users', UserController.patchUser)
 
-router.delete('/users/:username', UserController.deleteUser)
+router.delete('/users/:id', UserController.deleteUser)
 
 module.exports = router;
