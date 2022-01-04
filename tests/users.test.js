@@ -1,27 +1,29 @@
-const app = require('../index');
+const app = require('../app');
 const User = require("../models/UserModel");
 const db = require('../models/database');
 const request = require('supertest');
+require("dotenv").config('../.env');
 
 // Insert test users in database before testing
-beforeAll(() => {
+beforeAll(done => {
   const bcrypt = require("bcrypt");
   const saltRounds = bcrypt.genSaltSync();
-  require("dotenv").config('../.env');
- 
-  db.connect();
-
+  
   const users = [
     { username: "test_user_1", password: bcrypt.hashSync("password", saltRounds), userType: "user"},
     { username: "test_user_2", password: bcrypt.hashSync("password", saltRounds), userType: "user"},
   ]
 
-  db.insertMany(User, users, (res) => console.log(res));
+  db.insertMany(User, users, (res) => done());
 });
 
 // Delete test users in database after testing
-afterAll(() => {
-  db.deleteOne(User, {username: "test_user_1"}, (res) => {});
+afterAll(done => {
+  db.deleteOne(User, {username: "test_user_1"}, (res) => {
+    db.disconnect(() => {
+      done();
+    });
+  });
 });
 
 // Unit Test 1: GET requests

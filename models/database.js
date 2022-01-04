@@ -33,8 +33,10 @@ const database = {
       console.log('Connected to ' + url)
     });
   },
-  disconnect: () => {
+  disconnect: (callback) => {
     mongoose.connection.close();
+    if(callback)
+      return(callback());
   },
   dropCollection: (collection, callback) => {
     mongoose.connection.dropCollection(collection, (error, result) => {
