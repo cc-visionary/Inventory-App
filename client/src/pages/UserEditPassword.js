@@ -11,6 +11,10 @@ const UserEditPassword = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const onConfirm = () => {
+    setPreviousPassword('')
+    setNewPassword('')
+    setConfirmNewPassword('')
+
     if(previousPassword === '' || previousPassword === null) {
       setErrorMessage('Previous password cannot be empty')
       return 
@@ -48,6 +52,7 @@ const UserEditPassword = () => {
 
     UserService.patchUser(getUser().username, previousPassword, newPassword)
       .then(() => {
+        setErrorMessage('');
         alert('Successfully edited the password')
       }) 
       .catch((err) => {
@@ -55,10 +60,6 @@ const UserEditPassword = () => {
 
         setErrorMessage(data)
       })
-
-    setPreviousPassword('')
-    setNewPassword('')
-    setConfirmNewPassword('')
   }
 
   return (

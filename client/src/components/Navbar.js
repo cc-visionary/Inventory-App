@@ -19,7 +19,9 @@ const Navbar = () => {
   }
 
   return <div id="navbar">
-    <div className="left" />
+    <div className="left">
+      {getUser().userType === "user" ? <span>{getUser().username}</span> : <></> }
+    </div>
     <div className="middle">
       {getUser().userType === "admin" ? <a href="/users" className={window.location.pathname === '/users' ? "active" : ""}>Users</a> : <></>}
       <a href="/inventory" className={window.location.pathname === '/inventory' ? "active" : ""}>Inventory</a>
