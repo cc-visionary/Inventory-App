@@ -19,10 +19,13 @@ const Navbar = () => {
   }
 
   return <div id="navbar">
-    <div className="left" />
+    <div className="left">
+      {getUser().userType === "user" ? <span>{getUser().username}</span> : <></> }
+    </div>
     <div className="middle">
       {getUser().userType === "admin" ? <a href="/users" className={window.location.pathname === '/users' ? "active" : ""}>Accounts</a> : <></>}
       <a href="/inventory" className={window.location.pathname === '/inventory' ? "active" : ""}>Inventory</a>
+      {getUser().userType === "user" ? <a href="/edit" className={window.location.pathname === '/edit' ? "active" : ""}>Edit</a> : <></>}
     </div>
     <button className="logout-button" onClick={() => onLogout()}>Log out</button>
   </div>

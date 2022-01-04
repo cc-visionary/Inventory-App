@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { AddAccount, EditPassword } from '../components';
+import { AddAccount, AdminEditPassword } from '../components';
 import { UserService } from '../services';
 import { Modal } from 'antd';
 
@@ -206,7 +206,7 @@ export default class Users extends Component {
       onCancel={() => this.setState({ addAccountVisible: false })} 
       errorMessage={addAccountError}
     />
-    <EditPassword 
+    <AdminEditPassword 
       username={toBeEdited}
       visible={editPasswordVisible}
       onOk={(previousPassword, newPassword, confirmNewPassword) => this.onEdit(previousPassword, newPassword, confirmNewPassword)}
