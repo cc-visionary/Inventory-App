@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 import { AddAccount, EditPassword } from '../components';
 import { UserService } from '../services';
+import { Modal } from 'antd';
 
 import editIcon from '../assets/images/Edit Icon.svg';
 import trashIcon from '../assets/images/Trash Icon.svg';
 
 import '../assets/styles/pages/Users.css';
-import { Modal } from 'antd';
 
 export default class Users extends Component {
   constructor(props) {
