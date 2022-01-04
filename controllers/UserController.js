@@ -63,7 +63,7 @@ const UserController = {
           if(isEqual) {
             req.session.user = data;
             req.session.user.password = password;
-            res.status(200).send({userType: data.userType, message: "Login Success"});
+            res.status(200).send({result: data, message: "Login Success"});
           } else {
             // if matches a user, but incorrect password
             res.status(401).send("Invalid Credentials");
@@ -109,6 +109,8 @@ const UserController = {
       newPassword,
     } = req.body;
 
+    console.log(req.body)
+
     db.findOne(User, { _id }, (result) => {
       const data = result.result;
 
@@ -130,7 +132,7 @@ const UserController = {
       } else {
         const user = {
           username,
-          userType
+          userType: userType || 'user'
         }
 
         db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
