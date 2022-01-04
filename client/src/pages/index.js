@@ -1,5 +1,6 @@
 import Login from './Login';
 import Users from './Users';
-import Inventory from './Inventory';
+import AdminInventory from './AdminInventory';
+import UserInventory from './UserInventory';
 
-export { Login, Users, Inventory };
+export { Login, Users, AdminInventory, UserInventory };

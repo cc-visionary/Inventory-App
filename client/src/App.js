@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { Navbar } from './components';
-import { Login, Users, Inventory } from './pages';
+import { Login, Users, AdminInventory, UserInventory } from './pages';
 import { AdminRoute, UserRoute, PublicRoute } from './utils';
+import { getUser } from './utils/store';
 
 import './assets/styles/App.css';
 
@@ -26,7 +27,7 @@ export default class App extends Component {
           </Switch>
           <Switch>
             <AdminRoute path="/users" component={Users} />
-            <UserRoute path="/inventory" component={Inventory} />
+            <UserRoute path="/inventory" component={getUser().userType === 'user' ? UserInventory : AdminInventory} />
             <PublicRoute path="/" component={Login} />
           </Switch>
         </div>
