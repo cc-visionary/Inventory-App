@@ -103,6 +103,8 @@ export default class Users extends Component {
       UserService.patchUser(toBeEdited._id, username, userType, previousPassword, newPassword)
         .then((res) => {
           const { result } = res.data;
+
+          alert(`Update was successful`)
           
           const index = users.indexOf(toBeEdited);
 
@@ -125,6 +127,7 @@ export default class Users extends Component {
       onOk: async () => {
         UserService.deleteUser(user._id)
         .then(() => {
+          alert(`Deletion was successful`)
           const index = users.indexOf(user);
           const newUsers = [...users.slice(0, index), ...users.slice(index + 1)];
           this.setState({ users: newUsers, count: newUsers.length });
