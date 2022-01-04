@@ -107,7 +107,7 @@ const UserController = {
       newPassword,
     } = req.body;
 
-    db.findOne(User, {username}, (result) => {
+    db.findOne(User, { username }, (result) => {
       const data = result.result;
 
       if(data == null) {
