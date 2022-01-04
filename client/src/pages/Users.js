@@ -29,10 +29,8 @@ export default class Users extends Component {
     UserService.getAllUsers()
       .then((res) => {
         const { result: users } = res.data;
-        
-        console.log(users)
 
-        this.setState({ users: users.map(user => user.username), count: users.length });
+        this.setState({ users: users.map(user => ({username: user.username, userType: user.userType})), count: users.length });
       })
       .catch((err) => {
         console.log(err);
@@ -75,7 +73,6 @@ export default class Users extends Component {
 
       UserService.patchUser(toBeEdited, previousPassword, newPassword)
         .then((res) => {
-          console.log(res.data);
           this.setState({ editPasswordVisible: false, toBeEdited: null });
         }) 
         .catch((err) => {
@@ -110,10 +107,10 @@ export default class Users extends Component {
     if(username === '' || username === null) {
       this.setState({ addAccountError: "Username is empty" })
       return;
-    } else if(username.length <= 6) {
+    } else if(username.length < 6) {
       this.setState({ addAccountError: "Username has to be atleast 6 characters" })
       return;
-    } else if(username.length >= 30) {
+    } else if(username.length > 30) {
       this.setState({ addAccountError: "Username has to be atmost 30 characters" })
       return;
     }
@@ -123,7 +120,7 @@ export default class Users extends Component {
         const { password } = res.data;
 
         this.setState({ 
-          users: [...this.state.users, username], 
+          users: [...this.state.users, {username, userType: 'user'}], 
           count: this.state.count + 1,
           addAccountVisible: false,
           addAccountError: "",
@@ -171,25 +168,27 @@ export default class Users extends Component {
       <thead>
         <tr>
           <th>Username</th>
+          <th>Role</th>
           <th>Operations</th>
         </tr>
       </thead>
       <tbody>
         {
           // maps per user to the table
-          users.filter((user) => user.includes(searchValue)).map((user) => (
+          users.filter((user) => user.username.includes(searchValue)).map((user) => (
               <tr>
-                <td>{user}</td>
+                <td>{user.username}</td>
+                <td>{user.userType}</td>
                 <td>
                   <button 
                     className="edit-button" 
-                    onClick={() => this.setState({ editPasswordVisible: true, toBeEdited: user })}
+                    onClick={() => this.setState({ editPasswordVisible: true, toBeEdited: user.username })}
                   >
                     <img src={editIcon} alt="Edit" />
                   </button>
                   <button 
                     className="delete-button" 
-                    onClick={() => this.onDelete(user)} 
+                    onClick={() => this.onDelete(user.username)} 
                     disabled={user === "admin"}
                   >
                     <img src={trashIcon} alt="Delete" />
