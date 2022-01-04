@@ -53,18 +53,19 @@ const ProductController = {
     db.findOne(Product, { name }, (result) => defaultCallback(res, result));
   },
 
-  // todo: test patchproduct
   patchProduct: (req, res) => {
     const {
-      date,
-      dateString,
       supplier,
       quantity,
       location,
       price,
+      prevName,
       name,
       withdrawalAmount
     } = req.body;
+
+    const date = new Date(req.body.date);
+    const dateString = auxiliaryController.convertDateString(date);
 
     const updatedProduct = {
       date,
@@ -75,17 +76,27 @@ const ProductController = {
       price,
       name,
       withdrawalAmount
-    } = req.body;
+    }
 
     db.findOne(Product, {name}, (result) => {
-      const data = result.result;
-
-      if(data == null) 
-        res.status(401).send("Product not found");
-      else 
-        db.updateOne(Product, { name }, updatedProduct, (result) => res.status(200).send("Successfully updated product information"));
+      let data = result.result;
       
-    });
+      if(data == null) {
+        db.findOne(Product, {name: prevName}, (result) => {
+          const data = result.result;
+    
+          if(data == null) 
+            res.status(401).send("Product not found");
+          else 
+            db.updateOne(Product, { name: prevName }, updatedProduct, (result) => res.status(200).send("Successfully updated product information"));
+        });
+      }
+
+      else 
+        res.status(401).send("Product doesn't exist or a product with the same name already exists.");
+    })
+
+    
   },
 
   deleteProduct: (req, res) => {

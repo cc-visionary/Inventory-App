@@ -30,6 +30,8 @@ router.get('/products/name/:name', ProductController.getProductByName);
 
 router.post('/products/add', ProductController.postAddProduct);
 
+router.patch('/products', ProductController.patchProduct);
+
 router.delete('/products/delete/:name', ProductController.deleteProduct);
 
 
