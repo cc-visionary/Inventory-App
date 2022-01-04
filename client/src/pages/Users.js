@@ -83,16 +83,16 @@ export default class Users extends Component {
     }
   }
 
-  onDelete(username) {
+  onDelete(user) {
     const { users } = this.state;
 
     // asks for admin confirmation on whether or not to delete the user
     Modal.confirm({
-      title: `Are you sure you want to delete ${username}`,
+      title: `Are you sure you want to delete ${user.username}`,
       onOk: async () => {
-        UserService.deleteUser(username)
+        UserService.deleteUser(user.username)
         .then((res) => {
-          const index = users.indexOf(username);
+          const index = users.indexOf(user);
           const newUsers = [...users.slice(0, index), ...users.slice(index + 1)];
           this.setState({ users: newUsers, count: newUsers.length });
         })
@@ -188,7 +188,7 @@ export default class Users extends Component {
                   </button>
                   <button 
                     className="delete-button" 
-                    onClick={() => this.onDelete(user.username)} 
+                    onClick={() => this.onDelete(user)} 
                     disabled={user === "admin"}
                   >
                     <img src={trashIcon} alt="Delete" />
