@@ -27,7 +27,7 @@ export default class App extends Component {
           </Switch>
           <Switch>
             <AdminRoute path="/users" component={Users} />
-            <UserRoute path="/inventory" component={getUser().userType === 'user' ? UserInventory : AdminInventory} />
+            <UserRoute path="/inventory" component={getUser() ? (getUser().userType === 'user' ? UserInventory : AdminInventory) : null} />
             <PublicRoute path="/" component={Login} />
           </Switch>
         </div>
