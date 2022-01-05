@@ -55,7 +55,7 @@ export default class Users extends Component {
         return;
       } 
       
-      if(username === toBeEdited.username && userType === toBeEdited.userType) {
+      if(!editPasswordFlag && username === toBeEdited.username && userType === toBeEdited.userType) {
         this.setState({ editAccountError: "Cannot proceed. No changes has been done" })
         return;
       }
