@@ -6,6 +6,9 @@ require("dotenv").config('../.env');
 
 // Insert test users in database before testing
 beforeAll(done => {
+
+  db.connect(process.env.MONGODB_TEST_URL);
+
   const products = [
     { 
       name: "test_product_1", 

@@ -13,10 +13,8 @@ const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
 require("dotenv").config();
 
-const db = require('./models/database');
 const app = express();
 
-db.connect();
 // MIDDLEWARES
 app.use(require("morgan")("tiny"));
 

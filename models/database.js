@@ -5,10 +5,6 @@
 // import module `mongoose`
 const mongoose = require('mongoose');
 
-const url = process.env.MONGODB_URL;
-
-console.log(url);
-
 // additional connection options
 const options = {
   useUnifiedTopology: true,
@@ -27,7 +23,7 @@ const fail = ( error ) => ({
 
 const database = {
   /* connects to database */
-  connect: () => {
+  connect: (url) => {
     mongoose.connect(url, options, (err) => {
       if(err) throw err;
       console.log('Connected to ' + url)

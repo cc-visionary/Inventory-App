@@ -6,6 +6,9 @@ require("dotenv").config('../.env');
 
 // Insert test users in database before testing
 beforeAll(done => {
+
+  db.connect(process.env.MONGODB_TEST_URL);
+
   const bcrypt = require("bcrypt");
   const saltRounds = bcrypt.genSaltSync();
   
@@ -42,7 +45,7 @@ describe('GET users', function() {
 
   it('gets the admin account via id with a status code of 200,', (done) => {
     request(app)
-      .get('/api/users/619ed0fbf212738bb094385f')
+      .get('/api/users/61d53cd5352af9b592d58f6e')
       .expect(200, done);
   })
 });
