@@ -3,7 +3,10 @@ const User = require("../models/UserModel");
 const db = require('../models/database');
 const request = require('supertest');
 require("dotenv").config('../.env');
+
 let delete_id;
+let patch_id;
+
 // Insert test users in database before testing
 beforeAll(done => {
 
@@ -19,13 +22,15 @@ beforeAll(done => {
 
   db.insertMany(User, users, (res) => {
     delete_id = res.result[1]._id.toString();
+    patch_id = res.result[0]._id.toString();
+    console.log(patch_id);
     done();
   });
 });
 
 // Delete test users in database after testing
 afterAll(done => {
-  db.deleteOne(User, {username: "test_user_1"}, (res) => {
+  db.deleteOne(User, {username: "test_user_3"}, (res) => {
     db.disconnect(() => {
       done();
     });
@@ -84,4 +89,16 @@ describe('DELETE users', function() {
   })
 });
 
-// TODO: Unit Test 4: PATCH requests
+// Unit Test 4: PATCH requests
+describe('PATCH users', function() {
+  it('patch a user', (done) => {
+    request(app)
+      .patch('/api/users')
+      .send({
+        id: patch_id,
+        username: 'test_user_3',
+        userType: 'user',
+      })
+      .expect(200, done)
+  })
+});

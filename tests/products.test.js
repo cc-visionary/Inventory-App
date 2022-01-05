@@ -37,7 +37,7 @@ beforeAll(done => {
 
 // Delete test products in database after testing
 afterAll(done => {
-  db.deleteOne(Product, {name: "test_product_1"}, (res) => {
+  db.deleteOne(Product, {name: "test_product_3"}, (res) => {
     db.disconnect(() => {
       done();
     });
@@ -92,3 +92,20 @@ describe('DELETE products', function() {
 });
 
 // TODO: Unit Test 4: PATCH requests
+describe('PATCH products', function() {
+  it('patch a product', (done) => {
+    request(app)
+      .patch('/api/products')
+      .send({
+        prevName: "test_product_1",
+        name: "test_product_3", 
+        date: "01/04/2022", 
+        supplier: "Test Supplier 3",
+        quantity: 0,
+        location: "Test Location 3",
+        price: 0,
+        withdrawalAmount: 0
+      })
+      .expect(200, done)
+  })
+});
