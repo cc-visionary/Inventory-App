@@ -80,6 +80,8 @@ export default class Users extends Component {
           this.setState({ editAccountError: "Confirm password cannot be empty" });
           return;
         }
+
+        console.log([previousPassword, newPassword, confirmNewPassword])
   
         if(previousPassword.length < 6 || newPassword.length < 6 || confirmNewPassword.length < 6) {
           this.setState({ editAccountError: "Password has to be atleast 6 characters" });
@@ -127,10 +129,10 @@ export default class Users extends Component {
       onOk: async () => {
         UserService.deleteUser(user._id)
         .then(() => {
-          alert(`Deletion was successful`)
           const index = users.indexOf(user);
           const newUsers = [...users.slice(0, index), ...users.slice(index + 1)];
           this.setState({ users: newUsers, count: newUsers.length });
+          alert(`Deletion was successful`)
         })
         .catch((err) => {
           console.log(err.response.data);
@@ -140,6 +142,8 @@ export default class Users extends Component {
   }
 
   addAccount(username) {
+    const { users, count } = this.state;
+
     if(username === '' || username === null) {
       this.setState({ addAccountError: "Username is empty" })
       return;
@@ -159,8 +163,8 @@ export default class Users extends Component {
         const { result } = res.data;
 
         this.setState({ 
-          users: [...this.state.users, result], 
-          count: this.state.count + 1,
+          users: [...users, result], 
+          count: count + 1,
           addAccountVisible: false,
           addAccountError: "",
         })
@@ -248,7 +252,7 @@ export default class Users extends Component {
     <EditAccount 
       user={toBeEdited}
       visible={editAccountVisible}
-      onOk={(previousPassword, newPassword, confirmNewPassword) => this.onEdit(previousPassword, newPassword, confirmNewPassword)}
+      onOk={(username, role, editPasswordFlag, previousPassword, newPassword, confirmNewPassword) => this.onEdit(username, role, editPasswordFlag, previousPassword, newPassword, confirmNewPassword)}
       onCancel={() => this.setState({ editAccountVisible: false })}
       errorMessage={editAccountError}
     />
