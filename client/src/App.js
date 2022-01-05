@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { Navbar } from './components';
-import { Login, Users, Inventory, UserEditAccount } from './pages';
+import { Login, Users, AdminInventory, UserInventory, UserEditAccount } from './pages';
 import { AdminRoute, UserRoute, PublicRoute } from './utils';
 import { getUser } from './utils/store';
 
@@ -35,7 +35,7 @@ export default class App extends Component {
           </Switch>
           <Switch>
             <AdminRoute path="/users" component={Users} />
-            <UserRoute path="/inventory" component={Inventory} />
+            <UserRoute path="/inventory" component={getUser() ? (getUser().userType === 'user' ? UserInventory : AdminInventory) : null} />
             <UserRoute path="/edit" component={() => <UserEditAccount updateUser={(username) => this.setState({ username })} />} />
             <PublicRoute path="/" component={Login} />
           </Switch>

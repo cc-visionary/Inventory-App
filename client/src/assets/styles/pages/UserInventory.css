@@ -1,0 +1,43 @@
+#user-inventory {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#user-inventory .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#user-inventory .search-input {
+  min-width: 20vw;
+  margin-right: 20px;
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  border: none;
+  box-shadow: 4px 4px 10px 4px rgba(0, 0, 0, 0.25);
+  outline: none;
+}
+
+#user-inventory table {
+  margin-top: 20px;
+  border-collapse: collapse;
+  border: 1px solid #C7C4C4;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+#user-inventory thead th {
+  padding: 15px 0;
+}
+
+#user-inventory tbody td {
+  padding: 5px 0;
+}
+
+#user-inventory tr {
+  border: 1px solid #C7C4C4;
+}
