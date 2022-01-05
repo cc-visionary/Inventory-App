@@ -19,7 +19,7 @@ router.post('/users/logout', UserController.postLogout);
 
 router.patch('/users', UserController.patchUser);
 
-router.delete('/users/:username', UserController.deleteUser);
+router.delete('/users/:id', UserController.deleteUser);
 
 // Products API
 router.get('/products', ProductController.getAllProducts);
@@ -33,7 +33,5 @@ router.post('/products/add', ProductController.postAddProduct);
 router.patch('/products', ProductController.patchProduct);
 
 router.delete('/products/delete/:name', ProductController.deleteProduct);
-
-router.delete('/users/:id', UserController.deleteUser)
 
 module.exports = router;

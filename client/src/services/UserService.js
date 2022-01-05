@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-const USER_API_BASE_URL = "/api/users";
+import { USER_API_BASE_URL } from "../utils/constants";
 
 const UserService = {
   getAllUsers: () => axios.get(USER_API_BASE_URL),

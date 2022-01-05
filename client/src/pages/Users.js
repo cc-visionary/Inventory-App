@@ -113,6 +113,7 @@ export default class Users extends Component {
 
           if(getUser().username === toBeEdited.username) {
             setUserLocal(result)
+            this.props.updateUser(username)
           }
 
           this.setState({ editAccountVisible: false, toBeEdited: null, users: [...users.slice(0, index), result, ...users.slice(index + 1)], editAccountError: "" });
