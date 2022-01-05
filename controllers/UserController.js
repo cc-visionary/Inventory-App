@@ -111,6 +111,13 @@ const UserController = {
 
     db.findOne(User, { _id }, (result) => {
       const data = result.result;
+      
+      db.findOne(User, { username }, (result) => {
+        if(result.result != null) {
+          // if matches a user, but incorrect password
+          res.status(401).send("Username already exists");
+        }
+      })
 
       if(previousPassword != null && newPassword != null) {
         bcrypt.compare(previousPassword, data.password, function(err, isEqual) {
