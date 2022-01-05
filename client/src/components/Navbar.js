@@ -5,7 +5,7 @@ import { getUser, removeLocalUser } from '../utils/store';
 
 import '../assets/styles/components/Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ username }) => {
   const onLogout = () => {
     UserService.postLogout()
       .then((res) => {
@@ -20,7 +20,7 @@ const Navbar = () => {
 
   return <div id="navbar">
     <div className="left">
-      {getUser().userType === "user" ? <span>{getUser().username}</span> : <></> }
+      {getUser().userType === "user" ? <span>{username}</span> : <></> }
     </div>
     <div className="middle">
       {getUser().userType === "admin" ? <a href="/users" className={window.location.pathname === '/users' ? "active" : ""}>Accounts</a> : <></>}

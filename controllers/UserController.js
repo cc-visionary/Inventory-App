@@ -32,7 +32,7 @@ const UserController = {
         userType: userType == null ? "user" : userType
       };
 
-      db.insertOne(User, user, (result) => defaultCallback(res, {...result, password}));
+      db.insertOne(User, user, (result) => defaultCallback(res, result));
     });
   },
 
@@ -63,7 +63,7 @@ const UserController = {
           if(isEqual) {
             req.session.user = data;
             req.session.user.password = password;
-            res.status(200).send({userType: data.userType, message: "Login Success"});
+            res.status(200).send({result: data, message: "Login Success"});
           } else {
             // if matches a user, but incorrect password
             res.status(401).send("Invalid Credentials");
@@ -102,40 +102,46 @@ const UserController = {
   // mainly changes the password of the user
   patchUser: (req, res) => {
     const { 
+      id: _id,
       username,
+      userType,
       previousPassword,
       newPassword,
     } = req.body;
 
-    db.findOne(User, { username }, (result) => {
+    db.findOne(User, { _id }, (result) => {
       const data = result.result;
 
-      if(data == null) {
-        // if no username matches the users 
-        res.status(401).send("Invalid Username");
-      } else {
+      if(previousPassword != null && newPassword != null) {
         bcrypt.compare(previousPassword, data.password, function(err, isEqual) {
           if(isEqual) {
             const user = {
-              username: data.username,
+              username,
+              userType,
               password: bcrypt.hashSync(newPassword, saltRounds),
-              userType: data.userType,
             }
 
-            db.updateOne(User, { username }, user, (result) => res.status(200).send("Successfully updated the password"));
+            db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
           } else {
             // if matches a user, but incorrect password
             res.status(401).send("Previous password is incorrect");
           }
         });
+      } else {
+        const user = {
+          username,
+          userType: userType || 'user'
+        }
+
+        db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
       }
     });
   },
 
   deleteUser: (req, res) => {
-    const { username } = req.params;
+    const { id: _id } = req.params;
 
-    db.deleteOne(User, { username }, (result) => defaultCallback(res, result));
+    db.deleteOne(User, { _id }, (result) => defaultCallback(res, result));
   },
 };
 /*

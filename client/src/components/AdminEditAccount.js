@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Modal, Input } from 'antd';
+import { Modal, Input, Select, Checkbox } from 'antd';
 
-const AdminEditPassword = ({ username, errorMessage, visible, onOk, onCancel }) => {
+const { Option } = Select;
+
+const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
+  const [username, setUsername] = useState('');
+  const [role, setRole] = useState('');
+  const [editPasswordFlag, setEditPasswordFlag] = useState(false);
   const [previousPassword, setPreviousPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  useEffect(() => {
+    if(user != null) {
+      setUsername(user.username);
+      setRole(user.userType);
+    }
+  }, [user]);
 
   const clearFields = () => {
     setPreviousPassword('');
@@ -14,7 +26,7 @@ const AdminEditPassword = ({ username, errorMessage, visible, onOk, onCancel }) 
   }
 
   const handleOk = () => {
-    onOk(previousPassword, newPassword, confirmPassword);
+    onOk(username, role, editPasswordFlag, previousPassword, newPassword, confirmPassword);
     clearFields();
   }
 
@@ -31,12 +43,30 @@ const AdminEditPassword = ({ username, errorMessage, visible, onOk, onCancel }) 
       okText="Confirm" 
       onCancel={handleClose}
     >
+      <label><strong>Username</strong></label>
+      <Input 
+        value={username} 
+        onChange={(e) => setUsername(e.target.value)} 
+        placeholder="Enter username" 
+        onKeyPress={(e) => e.key === 'Enter' && handleOk()}
+      />
+      <br /><br />
+      <label><strong>Role</strong></label>
+      <br />
+      <Select style={{width: '100%'}} value={role} onChange={(val) => setRole(val)}>
+        <Option value='user'>user</Option>
+        <Option value='admin'>admin</Option>
+      </Select>
+      <br /><br />
+      <Checkbox checked={editPasswordFlag} onChange={(e) => setEditPasswordFlag(e.target.checked)}>Edit Password</Checkbox>
+      <br />
       <label><strong>Previous Password</strong></label>
       <Input 
         value={previousPassword} 
         onChange={(e) => setPreviousPassword(e.target.value)} 
         placeholder="Enter previous password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
+        disabled={!editPasswordFlag}
       />
       <br /><br />
       <label><strong>New Password</strong></label>
@@ -45,6 +75,7 @@ const AdminEditPassword = ({ username, errorMessage, visible, onOk, onCancel }) 
         onChange={(e) => setNewPassword(e.target.value)} 
         placeholder="Enter current password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
+        disabled={!editPasswordFlag}
       />
       <label><strong>Confirm Password</strong></label>
       <Input 
@@ -52,10 +83,11 @@ const AdminEditPassword = ({ username, errorMessage, visible, onOk, onCancel }) 
         onChange={(e) => setConfirmPassword(e.target.value)} 
         placeholder="Confirm your password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
+        disabled={!editPasswordFlag}
       />
       <p style={{color: "#f00"}}>{errorMessage}</p>
     </Modal>
   )
 };
 
-export default AdminEditPassword;
+export default AdminEditAccount;

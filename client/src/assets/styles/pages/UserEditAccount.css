@@ -1,4 +1,4 @@
-#user-edit-password {
+#user-edit-account {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,20 +6,20 @@
   margin-top: 20vh;
 }
 
-#user-edit-password h1 {
+#user-edit-account h1 {
   font-weight: bold;
   font-size: 40px;
   margin: 0;
 }
 
-#user-edit-password input {
+#user-edit-account input {
   font-family: 'Montserrat', sans-serif;
   margin-top: 10px;
   padding: 10px;
   width: 250px;
 }
 
-#user-edit-password button {
+#user-edit-account button {
   margin-top: 10px;
   width: 250px;
   cursor: pointer;
@@ -32,7 +32,7 @@
   border: none;
 }
 
-#user-edit-password .error-message {
+#user-edit-account .error-message {
   font-size: 14px;
   color: #f00;
   margin: 10px 0;
