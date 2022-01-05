@@ -8,6 +8,11 @@ import editIcon from '../assets/images/Edit Icon.svg';
 import trashIcon from '../assets/images/Trash Icon.svg';
 
 import '../assets/styles/pages/Users.css';
+<<<<<<< HEAD
+=======
+import { Modal } from 'antd';
+import { getUser, setUserLocal } from '../utils/store';
+>>>>>>> bc374d82e64998e28380464b2d8dd092858c8c4d
 
 export default class Users extends Component {
   constructor(props) {
@@ -55,7 +60,7 @@ export default class Users extends Component {
         return;
       } 
       
-      if(username === toBeEdited.username && userType === toBeEdited.userType) {
+      if(!editPasswordFlag && username === toBeEdited.username && userType === toBeEdited.userType) {
         this.setState({ editAccountError: "Cannot proceed. No changes has been done" })
         return;
       }
@@ -80,6 +85,8 @@ export default class Users extends Component {
           this.setState({ editAccountError: "Confirm password cannot be empty" });
           return;
         }
+
+        console.log([previousPassword, newPassword, confirmNewPassword])
   
         if(previousPassword.length < 6 || newPassword.length < 6 || confirmNewPassword.length < 6) {
           this.setState({ editAccountError: "Password has to be atleast 6 characters" });
@@ -108,7 +115,11 @@ export default class Users extends Component {
           
           const index = users.indexOf(toBeEdited);
 
-          this.setState({ editAccountVisible: false, toBeEdited: null, users: [...users.slice(0, index), result, ...users.slice(index + 1)] });
+          if(getUser().username === toBeEdited.username) {
+            setUserLocal(result)
+          }
+
+          this.setState({ editAccountVisible: false, toBeEdited: null, users: [...users.slice(0, index), result, ...users.slice(index + 1)], editAccountError: "" });
         }) 
         .catch((err) => {
           const { data } = err.response;
@@ -127,10 +138,10 @@ export default class Users extends Component {
       onOk: async () => {
         UserService.deleteUser(user._id)
         .then(() => {
-          alert(`Deletion was successful`)
           const index = users.indexOf(user);
           const newUsers = [...users.slice(0, index), ...users.slice(index + 1)];
           this.setState({ users: newUsers, count: newUsers.length });
+          alert(`Deletion was successful`)
         })
         .catch((err) => {
           console.log(err.response.data);
@@ -140,6 +151,8 @@ export default class Users extends Component {
   }
 
   addAccount(username) {
+    const { users, count } = this.state;
+
     if(username === '' || username === null) {
       this.setState({ addAccountError: "Username is empty" })
       return;
@@ -159,8 +172,8 @@ export default class Users extends Component {
         const { result } = res.data;
 
         this.setState({ 
-          users: [...this.state.users, result], 
-          count: this.state.count + 1,
+          users: [...users, result], 
+          count: count + 1,
           addAccountVisible: false,
           addAccountError: "",
         })
@@ -242,14 +255,14 @@ export default class Users extends Component {
     <AddAccount 
       visible={addAccountVisible} 
       onOk={(username) => this.addAccount(username)} 
-      onCancel={() => this.setState({ addAccountVisible: false })} 
+      onCancel={() => this.setState({ addAccountVisible: false, addAccountError: "" })} 
       errorMessage={addAccountError}
     />
     <AdminEditAccount 
       user={toBeEdited}
       visible={editAccountVisible}
-      onOk={(previousPassword, newPassword, confirmNewPassword) => this.onEdit(previousPassword, newPassword, confirmNewPassword)}
-      onCancel={() => this.setState({ editAccountVisible: false })}
+      onOk={(username, role, editPasswordFlag, previousPassword, newPassword, confirmNewPassword) => this.onEdit(username, role, editPasswordFlag, previousPassword, newPassword, confirmNewPassword)}
+      onCancel={() => this.setState({ editAccountVisible: false, editAccountError: "" })}
       errorMessage={editAccountError}
     />
   </div>
