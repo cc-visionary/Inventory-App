@@ -3,7 +3,7 @@ const User = require("../models/UserModel");
 const db = require('../models/database');
 const request = require('supertest');
 require("dotenv").config('../.env');
-
+let delete_id;
 // Insert test users in database before testing
 beforeAll(done => {
 
@@ -17,7 +17,10 @@ beforeAll(done => {
     { username: "test_user_2", password: bcrypt.hashSync("password", saltRounds), userType: "user"},
   ]
 
-  db.insertMany(User, users, (res) => done());
+  db.insertMany(User, users, (res) => {
+    delete_id = res.result[1]._id.toString();
+    done();
+  });
 });
 
 // Delete test users in database after testing
@@ -76,7 +79,7 @@ describe('POST users', function() {
 describe('DELETE users', function() {
   it('delete a user', (done) => {
     request(app)
-      .delete('/api/users/test_user_2')
+      .delete(`/api/users/${delete_id}`)
       .expect(200, done)
   })
 });
