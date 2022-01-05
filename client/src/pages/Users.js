@@ -8,6 +8,7 @@ import trashIcon from '../assets/images/Trash Icon.svg';
 
 import '../assets/styles/pages/Users.css';
 import { Modal } from 'antd';
+import { getUser, setUserLocal } from '../utils/store';
 
 export default class Users extends Component {
   constructor(props) {
@@ -110,7 +111,11 @@ export default class Users extends Component {
           
           const index = users.indexOf(toBeEdited);
 
-          this.setState({ editAccountVisible: false, toBeEdited: null, users: [...users.slice(0, index), result, ...users.slice(index + 1)] });
+          if(getUser().username === toBeEdited.username) {
+            setUserLocal(result)
+          }
+
+          this.setState({ editAccountVisible: false, toBeEdited: null, users: [...users.slice(0, index), result, ...users.slice(index + 1)], editAccountError: "" });
         }) 
         .catch((err) => {
           const { data } = err.response;
@@ -246,14 +251,14 @@ export default class Users extends Component {
     <AddAccount 
       visible={addAccountVisible} 
       onOk={(username) => this.addAccount(username)} 
-      onCancel={() => this.setState({ addAccountVisible: false })} 
+      onCancel={() => this.setState({ addAccountVisible: false, addAccountError: "" })} 
       errorMessage={addAccountError}
     />
     <EditAccount 
       user={toBeEdited}
       visible={editAccountVisible}
       onOk={(username, role, editPasswordFlag, previousPassword, newPassword, confirmNewPassword) => this.onEdit(username, role, editPasswordFlag, previousPassword, newPassword, confirmNewPassword)}
-      onCancel={() => this.setState({ editAccountVisible: false })}
+      onCancel={() => this.setState({ editAccountVisible: false, editAccountError: "" })}
       errorMessage={editAccountError}
     />
   </div>
