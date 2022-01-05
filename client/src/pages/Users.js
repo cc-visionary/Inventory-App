@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
+import { Modal } from 'antd';
 
 import { AddAccount, AdminEditAccount } from '../components';
 import { UserService } from '../services';
-import { Modal } from 'antd';
+import { getUser, setUserLocal } from '../utils/store';
 
 import editIcon from '../assets/images/Edit Icon.svg';
 import trashIcon from '../assets/images/Trash Icon.svg';
 
 import '../assets/styles/pages/Users.css';
-<<<<<<< HEAD
-=======
-import { Modal } from 'antd';
-import { getUser, setUserLocal } from '../utils/store';
->>>>>>> bc374d82e64998e28380464b2d8dd092858c8c4d
 
 export default class Users extends Component {
   constructor(props) {
