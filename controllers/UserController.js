@@ -112,36 +112,36 @@ const UserController = {
     db.findOne(User, { _id }, (result) => {
       const data = result.result;
       
-      db.findOne(User, { username }, (result) => {
-        if(result.result != null) {
+      db.findOne(User, { username }, (r) => {
+        if(r.result != null) {
           // if matches a user, but incorrect password
           res.status(401).send("Username already exists");
-        }
-      })
-
-      if(previousPassword != null && newPassword != null) {
-        bcrypt.compare(previousPassword, data.password, function(err, isEqual) {
-          if(isEqual) {
+        } else {
+          if(previousPassword != null && newPassword != null) {
+            bcrypt.compare(previousPassword, data.password, function(err, isEqual) {
+              if(isEqual) {
+                const user = {
+                  username,
+                  userType,
+                  password: bcrypt.hashSync(newPassword, saltRounds),
+                }
+    
+                db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
+              } else {
+                // if matches a user, but incorrect password
+                res.status(401).send("Previous password is incorrect");
+              }
+            });
+          } else {
             const user = {
               username,
-              userType,
-              password: bcrypt.hashSync(newPassword, saltRounds),
+              userType
             }
-
+    
             db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
-          } else {
-            // if matches a user, but incorrect password
-            res.status(401).send("Previous password is incorrect");
           }
-        });
-      } else {
-        const user = {
-          username,
-          userType
         }
-
-        db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
-      }
+      })
     });
   },
 
