@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Modal, Input, Select, Checkbox } from 'antd';
+import { getUser } from '../utils/store';
 
 const { Option } = Select;
 
@@ -20,6 +21,9 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
   }, [user]);
 
   const clearFields = () => {
+    if(user != null) {
+      setUsername(user.username)
+    }
     setPreviousPassword('');
     setNewPassword('');
     setConfirmPassword('');
@@ -53,7 +57,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <br /><br />
       <label><strong>Role</strong></label>
       <br />
-      <Select style={{width: '100%'}} value={role} onChange={(val) => setRole(val)}>
+      <Select style={{width: '100%'}} value={role} onChange={(val) => setRole(val)} disabled={!user || getUser().username === user.username}>
         <Option value='user'>user</Option>
         <Option value='admin'>admin</Option>
       </Select>
