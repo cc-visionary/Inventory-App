@@ -113,7 +113,7 @@ const UserController = {
       const data = result.result;
       
       db.findOne(User, { username }, (r) => {
-        if(r.result != null) {
+        if(username !== data.username && r.result != null) {
           // if matches a user, but incorrect password
           res.status(401).send("Username already exists");
         } else {
