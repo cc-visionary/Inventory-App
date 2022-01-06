@@ -32,9 +32,61 @@ export default class AdminInventory extends Component {
     })
   }
 
-  addProduct() {
+  addProduct(productName, quantity, price, supplier, location, datePurchased) {
+    const { products, count } = this.state;
 
-  }
+    if(productName === null || productName === '') {
+      this.setState({ addProductError: "Username cannot empty" });
+      return;
+    }
+
+    if(quantity < 1) {
+      this.setState({ addProductError: "Quantity has to be greater than 0" });
+      return;
+    }
+
+    if(price < 1) {
+      this.setState({ addProductError: "Price has to be greater than 0" });
+      return;
+    }
+
+    if(supplier === null || supplier === '') {
+      this.setState({ addProductError: "Supplier cannot empty" });
+      return;
+    }
+
+    if(location === null || location === '') {
+      this.setState({ addProductError: "Stock Location cannot empty" });
+      return;
+    }
+
+    if(datePurchased === null) {
+      this.setState({ addProductError: "Date Purchased cannot empty" });
+      return;
+    }
+
+    const product = {
+      supplier,
+      location,
+      date: datePurchased,
+      name: productName,
+      quantity,
+      price
+    }
+
+    ProductService.postAddProduct(product)
+      .then((res) => {
+        const { result } = res.data
+      
+        this.setState({ products: [...products, result], count: count + 1, addProductVisible: false, addProductError: "" })
+      })
+      .catch((err) => {
+        const { error } = err.response.data;
+        if(error.code === 11000) {
+          this.setState({ addProductError: "Product name already exists" })
+        }
+      });
+    }
 
   editProduct() {
 
@@ -108,14 +160,14 @@ export default class AdminInventory extends Component {
       <AddProduct 
         errorMessage={addProductError} 
         visible={addProductVisible}
-        onOk={() => this.addProduct()}
+        onOk={(productName, quantity, price, supplier, location, datePurchased) => this.addProduct(productName, quantity, price, supplier, location, datePurchased)}
         onCancel={() => this.setState({ addProductVisible: false, addProductError: '' })}
       />
       <EditProduct 
         product={toBeEdited}
         errorMessage={editProductError}
         visible={editProductVisible} 
-        onOk={() => this.editProduct()}
+        onOk={(productName, quantity, price, supplier, location, datePurchased) => this.editProduct(productName, quantity, price, supplier, location, datePurchased)}
         onCancel={() => this.setState({ editProductVisible: false, editProductError: '' })}
       />
     </div>

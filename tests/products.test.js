@@ -18,7 +18,6 @@ beforeAll(done => {
       quantity: 1,
       location: "Test Location",
       price: 10,
-      withdrawalAmount: 20
     },
     { 
       name: "test_product_2", 
@@ -28,7 +27,6 @@ beforeAll(done => {
       quantity: 2,
       location: "Test Location 2",
       price: 20,
-      withdrawalAmount: 30
     },
   ]
 
@@ -72,7 +70,6 @@ describe('POST products', function() {
         quantity: 0,
         location: "Test Location 0",
         price: 0,
-        withdrawalAmount: 0
       })
       .expect(200).end(function(err, res) {
         if (err) return done(err);
