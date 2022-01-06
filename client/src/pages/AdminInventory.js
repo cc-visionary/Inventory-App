@@ -95,7 +95,7 @@ export default class AdminInventory extends Component {
     const { products, toBeEdited } = this.state;
 
     if(productName === null || productName === '') {
-      this.setState({ editProductError: "Username cannot empty" });
+      this.setState({ editProductError: "Product Name cannot be empty" });
       return;
     }
 
@@ -110,17 +110,17 @@ export default class AdminInventory extends Component {
     }
 
     if(supplier === null || supplier === '') {
-      this.setState({ editProductError: "Supplier cannot empty" });
+      this.setState({ editProductError: "Supplier cannot be empty" });
       return;
     }
 
     if(location === null || location === '') {
-      this.setState({ editProductError: "Stock Location cannot empty" });
+      this.setState({ editProductError: "Stock Location cannot be empty" });
       return;
     }
 
     if(datePurchased === null) {
-      this.setState({ editProductError: "Date Purchased cannot empty" });
+      this.setState({ editProductError: "Date Purchased cannot be empty" });
       return;
     }
 
