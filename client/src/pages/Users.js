@@ -107,7 +107,7 @@ export default class Users extends Component {
         .then((res) => {
           const { result } = res.data;
 
-          alert(`Update was successful`)
+          alert(`Edit was successful`)
           
           const index = users.indexOf(toBeEdited);
 
@@ -224,7 +224,7 @@ export default class Users extends Component {
       <tbody>
         {
           // maps each user to the table
-          users.filter((user) => user.username.includes(searchValue)).map((user) => (
+          users.filter((user) => user.username.toLowerCase().includes(searchValue.toLowerCase())).map((user) => (
               <tr>
                 <td>{user.username}</td>
                 <td>{user.userType}</td>

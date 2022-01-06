@@ -77,19 +77,19 @@ const ProductController = {
     db.findOne(Product, {name}, (result) => {
       let data = result.result;
       
-      if(data == null) {
+      if(prevName === name && data !== null) {
         db.findOne(Product, {name: prevName}, (result) => {
           const data = result.result;
     
           if(data == null) 
             res.status(401).send("Product not found");
           else 
-            db.updateOne(Product, { name: prevName }, updatedProduct, (result) => res.status(200).send("Successfully updated product information"));
+            db.updateOne(Product, { name: prevName }, updatedProduct, (result) => res.status(200).send({...result, result: { name, supplier, quantity, dateString, price, location }}));
         });
       }
 
       else 
-        res.status(401).send("Product doesn't exist or a product with the same name already exists.");
+        res.status(401).send("Product with the same name already exists.");
     })
 
     
