@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Modal } from 'antd';
 
 import { ProductService } from '../services';
 import { AddProduct, EditProduct } from '../components';
@@ -79,6 +80,7 @@ export default class AdminInventory extends Component {
         const { result } = res.data
       
         this.setState({ products: [...products, result], count: count + 1, addProductVisible: false, addProductError: "" })
+        alert("Product has been successfully added.")
       })
       .catch((err) => {
         const { error } = err.response.data;
@@ -90,6 +92,27 @@ export default class AdminInventory extends Component {
 
   editProduct() {
 
+  }
+
+  onDelete(product) {
+    const { products } = this.state;
+
+    // asks for admin confirmation on whether or not to delete the user
+    Modal.confirm({
+      title: `Are you sure you want to delete ${product.name}`,
+      onOk: async () => {
+        ProductService.deleteProduct(product.name)
+        .then(() => {
+          const index = products.indexOf(product);
+          const updatedProducts = [...products.slice(0, index), ...products.slice(index + 1)];
+          this.setState({ products: updatedProducts, count: updatedProducts.length });
+          alert(`Deletion was successful`)
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        })
+      }
+    });
   }
 
   render() {
@@ -118,9 +141,9 @@ export default class AdminInventory extends Component {
         <thead>
           <tr>
             <th>Date Purchased</th>
+            <th>Product Name</th>
             <th>Supplier</th>
             <th>Quantity</th>
-            <th>Product Name</th>
             <th>Price</th>
             <th>Location</th>
             <th>Operations</th>
@@ -132,9 +155,9 @@ export default class AdminInventory extends Component {
             products.filter((item) => item.name.includes(searchValue)).map((item) => (
                 <tr key={item.name}>
                   <td>{item.dateString}</td>
+                  <td>{item.name}</td>
                   <td>{item.supplier}</td>
                   <td>{item.quantity}</td>
-                  <td>{item.name}</td>
                   <td>P {item.price}</td>
                   <td>{item.location}</td>
                   <td>

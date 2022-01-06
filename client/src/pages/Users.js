@@ -136,8 +136,8 @@ export default class Users extends Component {
         UserService.deleteUser(user._id)
         .then(() => {
           const index = users.indexOf(user);
-          const newUsers = [...users.slice(0, index), ...users.slice(index + 1)];
-          this.setState({ users: newUsers, count: newUsers.length });
+          const updatedUsers = [...users.slice(0, index), ...users.slice(index + 1)];
+          this.setState({ users: updatedUsers, count: updatedUsers.length });
           alert(`Deletion was successful`)
         })
         .catch((err) => {
