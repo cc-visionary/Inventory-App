@@ -5,7 +5,7 @@ import { getUser } from '../utils/store';
 
 const { Option } = Select;
 
-const EditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
+const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
   const [editPasswordFlag, setEditPasswordFlag] = useState(false);
@@ -62,7 +62,7 @@ const EditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
         <Option value='admin'>admin</Option>
       </Select>
       <br /><br />
-      <Checkbox value={editPasswordFlag} onChange={(e) => setEditPasswordFlag(e.target.checked)}>Edit Password</Checkbox>
+      <Checkbox checked={editPasswordFlag} onChange={(e) => setEditPasswordFlag(e.target.checked)}>Edit Password</Checkbox>
       <br />
       <label><strong>Previous Password</strong></label>
       <Input 
@@ -94,4 +94,4 @@ const EditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
   )
 };
 
-export default EditAccount;
+export default AdminEditAccount;

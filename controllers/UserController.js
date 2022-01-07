@@ -63,7 +63,7 @@ const UserController = {
           if(isEqual) {
             req.session.user = data;
             req.session.user.password = password;
-            res.status(200).send({userType: data.userType, message: "Login Success"});
+            res.status(200).send({result: data, message: "Login Success"});
           } else {
             // if matches a user, but incorrect password
             res.status(401).send("Invalid Credentials");

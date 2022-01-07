@@ -1,5 +1,5 @@
 import Navbar from './Navbar';
 import AddAccount from './AddAccount';
-import EditAccount from './EditAccount';
+import AdminEditAccount from './AdminEditAccount';
 
-export { Navbar, AddAccount, EditAccount };
+export { Navbar, AddAccount, AdminEditAccount };

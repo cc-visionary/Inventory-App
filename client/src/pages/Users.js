@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import { Modal } from 'antd';
 
-import { AddAccount, EditAccount } from '../components';
+import { AddAccount, AdminEditAccount } from '../components';
 import { UserService } from '../services';
+import { getUser, setUserLocal } from '../utils/store';
 
 import editIcon from '../assets/images/Edit Icon.svg';
 import trashIcon from '../assets/images/Trash Icon.svg';
 
 import '../assets/styles/pages/Users.css';
-import { Modal } from 'antd';
-import { getUser, setUserLocal } from '../utils/store';
 
 export default class Users extends Component {
   constructor(props) {
@@ -254,7 +254,7 @@ export default class Users extends Component {
       onCancel={() => this.setState({ addAccountVisible: false, addAccountError: "" })} 
       errorMessage={addAccountError}
     />
-    <EditAccount 
+    <AdminEditAccount 
       user={toBeEdited}
       visible={editAccountVisible}
       onOk={(username, role, editPasswordFlag, previousPassword, newPassword, confirmNewPassword) => this.onEdit(username, role, editPasswordFlag, previousPassword, newPassword, confirmNewPassword)}
