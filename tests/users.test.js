@@ -9,28 +9,31 @@ let patch_id;
 
 // Insert test users in database before testing
 beforeAll(done => {
-
   db.connect(process.env.MONGODB_TEST_URL);
 
   const bcrypt = require("bcrypt");
   const saltRounds = bcrypt.genSaltSync();
-  
+
   const users = [
     { username: "test_user_1", password: bcrypt.hashSync("password", saltRounds), userType: "user"},
     { username: "test_user_2", password: bcrypt.hashSync("password", saltRounds), userType: "user"},
+    { username: "test_admin", password: bcrypt.hashSync("password", saltRounds), userType: "admin"},
   ]
 
-  db.insertMany(User, users, (res) => {
-    delete_id = res.result[1]._id.toString();
-    patch_id = res.result[0]._id.toString();
-    console.log(patch_id);
-    done();
-  });
+  db.dropCollection('users', () => {
+    db.insertMany(User, users, (res) => {
+      patch_id = res.result[0]._id.toString();
+      delete_id = res.result[1]._id.toString();
+      admin_id = res.result[2]._id.toString();
+      done();
+    });
+  })
+  
 });
 
 // Delete test users in database after testing
 afterAll(done => {
-  db.deleteOne(User, {username: "test_user_3"}, (res) => {
+  db.dropCollection('users', () => {
     db.disconnect(() => {
       done();
     });
@@ -47,13 +50,13 @@ describe('GET users', function() {
 
   it('gets the admin account via username with a status code of 200,', (done) => {
     request(app)
-      .get('/api/users/username/admin')
+      .get('/api/users/username/test_admin')
       .expect(200, done);
   })
 
   it('gets the admin account via id with a status code of 200,', (done) => {
     request(app)
-      .get('/api/users/61d53cd5352af9b592d58f6e')
+      .get(`/api/users/${admin_id}`)
       .expect(200, done);
   })
 });
@@ -71,11 +74,10 @@ describe('POST users', function() {
       })
   })
 
-  
   it('login admin', (done) => {
     request(app)
       .post('/api/users/login')
-      .send({username: 'admin', password: 'password'})
+      .send({username: 'test_admin', password: 'password'})
       .expect(200, done)
   })
 });

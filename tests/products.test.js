@@ -4,9 +4,9 @@ const db = require('../models/database');
 const request = require('supertest');
 require("dotenv").config('../.env');
 
-// Insert test users in database before testing
+let product_id;
+// Insert test products in database before testing
 beforeAll(done => {
-
   db.connect(process.env.MONGODB_TEST_URL);
 
   const products = [
@@ -32,16 +32,21 @@ beforeAll(done => {
     },
   ]
 
-  db.insertMany(Product, products, (res) => done());
+  db.dropCollection('products', () => {
+    db.insertMany(Product, products, (res) => {
+      product_id = res.result[0]._id.toString();
+      done();
+    });
+  })
 });
 
 // Delete test products in database after testing
 afterAll(done => {
-  db.deleteOne(Product, {name: "test_product_3"}, (res) => {
+  db.dropCollection('products', () => {
     db.disconnect(() => {
       done();
     });
-  });
+  })
 });
 
 // Unit Test 1: GET requests
@@ -55,6 +60,12 @@ describe('GET products', function() {
   it('gets the test product via name with a status code of 200,', (done) => {
     request(app)
       .get('/api/users/name/test_product_1')
+      .expect(200, done);
+  })
+
+  it('gets the test product via id with a status code of 200,', (done) => {
+    request(app)
+      .get(`/api/users/${product_id}`)
       .expect(200, done);
   })
 });
