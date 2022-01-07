@@ -32,11 +32,8 @@ const Login = () => {
     UserService.postLogin(user)
       .then((res) => {
         if(res.status === 200) {
-          const user = {
-            username,
-            userType: res.data.userType,
-          }
-          setUserLocal(user);
+          const { result } = res.data;
+          setUserLocal(result);
           window.location.reload();
         } 
       })
