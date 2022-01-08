@@ -9,6 +9,8 @@ const UserSchema = new Schema({
     type: String,
     unique: true,
     required: true,
+    minLength: 6,
+    maxLength: 30
   },
   password: {
     type: String,
@@ -17,6 +19,7 @@ const UserSchema = new Schema({
   userType: {
     type: String,
     required: true,
+    enum: ['user', 'admin']
   }
 });
 

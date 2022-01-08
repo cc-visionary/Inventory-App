@@ -18,7 +18,6 @@ beforeAll(done => {
       quantity: 1,
       location: "Test Location",
       price: 10,
-      withdrawalAmount: 20
     },
     { 
       name: "test_product_2", 
@@ -28,7 +27,6 @@ beforeAll(done => {
       quantity: 2,
       location: "Test Location 2",
       price: 20,
-      withdrawalAmount: 30
     },
   ]
 
@@ -83,26 +81,13 @@ describe('POST products', function() {
         quantity: 0,
         location: "Test Location 0",
         price: 0,
-        withdrawalAmount: 0
       })
-      .expect(200).end(function(err, res) {
-        if (err) return done(err);
-        db.deleteOne(Product, {name: "test_product_0"}, (res) => {});
-        return done();
-      })
+      .expect(200, done);
   })
 });
 
-// Unit Test 3: DELETE requests
-describe('DELETE products', function() {
-  it('delete a product', (done) => {
-    request(app)
-      .delete('/api/products/delete/test_product_2')
-      .expect(200, done)
-  })
-});
 
-// TODO: Unit Test 4: PATCH requests
+// Unit Test 3: PATCH requests
 describe('PATCH products', function() {
   it('patch a product', (done) => {
     request(app)
@@ -115,8 +100,31 @@ describe('PATCH products', function() {
         quantity: 0,
         location: "Test Location 3",
         price: 0,
-        withdrawalAmount: 0
       })
+      .expect(200, done)
+  })
+
+  it('no duplicate product name when editing', (done) => {
+    request(app)
+      .patch('/api/products')
+      .send({
+        prevName: "test_product_2",
+        name: "test_product_3", 
+        date: "01/04/2022", 
+        supplier: "Test Supplier 3",
+        quantity: 0,
+        location: "Test Location 3",
+        price: 0,
+      })
+      .expect(401, done)
+  })
+});
+
+// Unit Test 4: DELETE requests
+describe('DELETE products', function() {
+  it('delete a product', (done) => {
+    request(app)
+      .delete('/api/products/delete/test_product_2')
       .expect(200, done)
   })
 });
