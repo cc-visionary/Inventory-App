@@ -55,12 +55,6 @@ describe('GET products', function() {
       .expect(200, done);
   });
 
-  it('gets the test product via name with a status code of 200,', (done) => {
-    request(app)
-      .get('/api/users/name/test_product_1')
-      .expect(200, done);
-  })
-
   it('gets the test product via id with a status code of 200,', (done) => {
     request(app)
       .get(`/api/users/${product_id}`)
