@@ -32,7 +32,7 @@ const UserController = {
         userType: userType == null ? "user" : userType
       };
 
-      db.insertOne(User, user, (result) => defaultCallback(res, {success: true, result: { _id: result.result._id, username: result.result.username, userType: result.result.userType, password }}));
+      db.insertOne(User, user, (result) => defaultCallback(res, result.success ? {success: true, result: { _id: result.result._id, username: result.result.username, userType: result.result.userType, password }} : result));
     });
   },
 
@@ -113,7 +113,7 @@ const UserController = {
       const data = result.result;
       
       db.findOne(User, { username }, (r) => {
-        if(username !== data.username && r.result != null) {
+        if(username == data.username && r.result != null) {
           // if matches a user, but incorrect password
           res.status(401).send("Username already exists");
         } else {
