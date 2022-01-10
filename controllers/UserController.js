@@ -109,6 +109,10 @@ const UserController = {
       newPassword,
     } = req.body;
 
+    if(userType !== 'admin' && userType !== 'user') {
+      res.status(401).send("Usertype can only be `admin` or `user`");
+    }
+
     db.findOne(User, { _id }, (result) => {
       const data = result.result;
       
