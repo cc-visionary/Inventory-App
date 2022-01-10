@@ -151,7 +151,7 @@ export default class Users extends Component {
     const { users, count } = this.state;
 
     if(username === '' || username === null) {
-      this.setState({ addAccountError: "Username is empty" })
+      this.setState({ addAccountError: "Username cannot be empty" })
       return;
     } else if(username.length < 6) {
       this.setState({ addAccountError: "Username has to be atleast 6 characters" })

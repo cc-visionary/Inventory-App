@@ -17,7 +17,6 @@ const ProductController = {
       location,
       price,
       name,
-      withdrawalAmount
     } = req.body;
 
     const date = new Date(req.body.date);
@@ -31,7 +30,6 @@ const ProductController = {
       location,
       price,
       name,
-      withdrawalAmount
     }
 
     db.insertOne(Product, product, (result) => defaultCallback(res, result));
@@ -61,7 +59,6 @@ const ProductController = {
       price,
       prevName,
       name,
-      withdrawalAmount
     } = req.body;
 
     const date = new Date(req.body.date);
@@ -75,7 +72,6 @@ const ProductController = {
       location,
       price,
       name,
-      withdrawalAmount
     }
 
     db.findOne(Product, {name}, (result) => {
