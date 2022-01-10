@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import '../assets/styles/pages/UserInventory.css';
+import { ProductService } from '../services';
 
 export default class UserInventory extends Component {
   constructor(props) {
@@ -8,12 +9,20 @@ export default class UserInventory extends Component {
 
     this.state = {
       searchValue: '',
-      items: [{name: 'prod 1', supplier: 'abc', quantity: 10, datePurchased: 'December 3, 2021'}],
+      products: [],
     };
   }
 
+  componentDidMount() {
+    ProductService.getAllProducts().then((res) => {
+      const { result: products } = res.data;
+
+      this.setState({ products });
+    })
+  }
+
   render() {
-    const { searchValue, items } = this.state;
+    const { searchValue, products } = this.state;
 
     return (
     <div id='user-inventory'>
@@ -38,12 +47,12 @@ export default class UserInventory extends Component {
         <tbody>
           {
             // maps per user to the table
-            items.filter((item) => item.name.includes(searchValue)).map((item) => (
+            products.filter((item) => item.name.includes(searchValue)).map((item) => (
                 <tr key={item.name}>
                   <td>{item.name}</td>
                   <td>{item.supplier}</td>
                   <td>{item.quantity}</td>
-                  <td>{item.datePurchased}</td>
+                  <td>{item.dateString}</td>
                 </tr>
               )
             )

@@ -20,7 +20,7 @@ const Navbar = ({ username }) => {
 
   return <div id="navbar">
     <div className="left">
-      {getUser().userType === "user" ? <span>{username}</span> : <></> }
+      <span>{username}</span>
     </div>
     <div className="middle">
       {getUser().userType === "admin" ? <a href="/users" className={window.location.pathname === '/users' ? "active" : ""}>Accounts</a> : <></>}

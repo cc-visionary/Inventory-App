@@ -19,7 +19,7 @@ router.post('/users/logout', UserController.postLogout);
 
 router.patch('/users', UserController.patchUser);
 
-router.delete('/users/:id', UserController.deleteUser)
+router.delete('/users/:id', UserController.deleteUser);
 
 // Products API
 router.get('/products', ProductController.getAllProducts);

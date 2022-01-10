@@ -28,13 +28,13 @@ export default class App extends Component {
       <Router>
         <div className="app">
           <Switch>
-            <AdminRoute path="/users" component={Navbar} />
+            <AdminRoute path="/users" component={() => <Navbar username={username}/>} />
             <UserRoute path="/inventory" component={() => <Navbar username={username}/>} />
             <UserRoute path="/edit" component={() => <Navbar username={username}/>} />
             <Route path="/" component={() => <></>} />
           </Switch>
           <Switch>
-            <AdminRoute path="/users" component={Users} />
+            <AdminRoute path="/users" component={() => <Users updateUser={(username) => this.setState({ username })} />} />
             <UserRoute path="/inventory" component={getUser() ? (getUser().userType === 'user' ? UserInventory : AdminInventory) : null} />
             <UserRoute path="/edit" component={() => <UserEditAccount updateUser={(username) => this.setState({ username })} />} />
             <PublicRoute path="/" component={Login} />
