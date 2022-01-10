@@ -81,8 +81,6 @@ export default class Users extends Component {
           this.setState({ editAccountError: "Confirm password cannot be empty" });
           return;
         }
-
-        console.log([previousPassword, newPassword, confirmNewPassword])
   
         if(previousPassword.length < 6 || newPassword.length < 6 || confirmNewPassword.length < 6) {
           this.setState({ editAccountError: "Password has to be atleast 6 characters" });
@@ -107,7 +105,7 @@ export default class Users extends Component {
         .then((res) => {
           const { result } = res.data;
 
-          alert(`Update was successful`)
+          alert(`Edit was successful`)
           
           const index = users.indexOf(toBeEdited);
 
@@ -136,8 +134,8 @@ export default class Users extends Component {
         UserService.deleteUser(user._id)
         .then(() => {
           const index = users.indexOf(user);
-          const newUsers = [...users.slice(0, index), ...users.slice(index + 1)];
-          this.setState({ users: newUsers, count: newUsers.length });
+          const updatedUsers = [...users.slice(0, index), ...users.slice(index + 1)];
+          this.setState({ users: updatedUsers, count: updatedUsers.length });
           alert(`Deletion was successful`)
         })
         .catch((err) => {
@@ -224,7 +222,7 @@ export default class Users extends Component {
       <tbody>
         {
           // maps each user to the table
-          users.filter((user) => user.username.includes(searchValue)).map((user) => (
+          users.filter((user) => user.username.toLowerCase().includes(searchValue.toLowerCase())).map((user) => (
               <tr>
                 <td>{user.username}</td>
                 <td>{user.userType}</td>

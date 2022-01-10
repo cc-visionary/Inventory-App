@@ -149,7 +149,7 @@ describe('PATCH users', function() {
       .patch('/api/users')
       .send({
         id: patch_id,
-        username: 'test_user_3',
+        username: 'test_user_4', // valid username - new username
         userType: 'user',
       })
       .expect(200, done)
@@ -160,7 +160,7 @@ describe('PATCH users', function() {
       .patch('/api/users')
       .send({
         id: error_id,
-        username: 'test_user_3',
+        username: 'test_admin', // invalid username - existing username
         userType: 'user',
       })
       .expect(401, done)
