@@ -1,0 +1,79 @@
+#users-page {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#users-page .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#users-page .search-input {
+  min-width: 20vw;
+  margin-right: 20px;
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  border: none;
+  box-shadow: 4px 4px 10px 4px rgba(0, 0, 0, 0.25);
+  outline: none;
+}
+
+#users-page .add-account-button {
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  color: #FFF;
+  border: none;
+  background-color: #1989F1;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+#users-page .user-stats {
+  font-size: 16px;
+}
+
+#users-page .count {
+  color: #1989F1;
+  font-weight: 900;
+}
+
+#users-page table {
+  margin-top: 20px;
+  border-collapse: collapse;
+  border: 1px solid #C7C4C4;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+#users-page thead th {
+  padding: 15px 0;
+}
+
+#users-page tbody td {
+  padding: 5px 0;
+}
+
+#users-page tr {
+  border: 1px solid #C7C4C4;
+}
+
+#users-page button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#users-page .edit-button img {
+  height: 19px;
+  width: 19px;
+}
+
+#users-page .delete-button img {
+  height: 25px;
+  width: 25px;
+}

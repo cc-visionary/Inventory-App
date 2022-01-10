@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Footer, Navbar } from './components';
-import { Login } from './pages';
-
-import UserService from './services/UserService';
+import { Navbar } from './components';
+import { Login, Users, AdminInventory, UserInventory, UserEditAccount } from './pages';
+import { AdminRoute, UserRoute, PublicRoute } from './utils';
+import { getUser } from './utils/store';
 
 import './assets/styles/App.css';
 
@@ -13,34 +13,31 @@ export default class App extends Component {
     super(props);
 
     this.state = {
+      username: '',
     };
   }
-
+  
   componentDidMount() {
-    UserService.getAllUsers()
-      .then((res) => {
-        const { success, result } = res.data;
-        console.log(success);
-        console.log(result);
-      });
+    this.setState({ username: getUser() ? getUser().username : '' })
   }
 
   render() {
+    const { username } = this.state;
 
     return (
       <Router>
         <div className="app">
           <Switch>
-            <Route path="/login" component={() => <></>} />
-            <Route path="/" component={Navbar} />
-          </Switch>
-          <Switch>
-            <Route path="/login" component={Login } />
+            <AdminRoute path="/users" component={() => <Navbar username={username}/>} />
+            <UserRoute path="/inventory" component={() => <Navbar username={username}/>} />
+            <UserRoute path="/edit" component={() => <Navbar username={username}/>} />
             <Route path="/" component={() => <></>} />
           </Switch>
           <Switch>
-            <Route path="/login" component={() => <></>} />
-            <Route path="/" component={Footer} />
+            <AdminRoute path="/users" component={() => <Users updateUser={(username) => this.setState({ username })} />} />
+            <UserRoute path="/inventory" component={getUser() ? (getUser().userType === 'user' ? UserInventory : AdminInventory) : null} />
+            <UserRoute path="/edit" component={() => <UserEditAccount updateUser={(username) => this.setState({ username })} />} />
+            <PublicRoute path="/" component={Login} />
           </Switch>
         </div>
       </Router>

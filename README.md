@@ -4,16 +4,22 @@
 You will only have to do these once when you are setting up for development
 
 1. Open a new instance of command line
-2. Enter the command `cd client`.
-3. Enter the command `npm i`.
-4. Enter the command `cd ../server`.
-5. Enter the command `npm i`.
+2. Enter the command `npm i`.
+3. Enter the command `cd client`.
+4. Enter the command `npm i`.
 
 ## Instructions to run for development:
 1. Open a new instance of command line
 2. Enter the command `cd client`.
 4. Enter the command `npm run dev`
 5. You can now access the front-end (to see the website) through `http://localhost:8080/`  
+
+## Instructons to run the application:
+1. Open a new instance of command line
+2. Enter the command `npm i`.
+3. Enter the command `npm run start`.
+5. You can now access the front-end (to see the website) through `http://localhost:3000/`
+
 
 ## Default Credentials
 | username      | password   |

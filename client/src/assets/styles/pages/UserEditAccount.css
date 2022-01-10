@@ -1,0 +1,39 @@
+#user-edit-account {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20vh;
+}
+
+#user-edit-account h1 {
+  font-weight: bold;
+  font-size: 40px;
+  margin: 0;
+}
+
+#user-edit-account input {
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 10px;
+  padding: 10px;
+  width: 250px;
+}
+
+#user-edit-account button {
+  margin-top: 10px;
+  width: 250px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  color: #FFF;
+  font-size: 20px;
+  padding: 10px;
+  background: #1989F1;
+  border-radius: 8px;
+  border: none;
+}
+
+#user-edit-account .error-message {
+  font-size: 14px;
+  color: #f00;
+  margin: 10px 0;
+}
