@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Modal, Input } from 'antd';
 
-const AddAccount = ({ errorMessage, visible, onOk, onCancel }) => {
+const EditProduct = ({ product, errorMessage, visible, onOk, onCancel }) => {
   const [username, setUsername] = useState('');
 
   const clearFields = () => {
@@ -19,25 +19,17 @@ const AddAccount = ({ errorMessage, visible, onOk, onCancel }) => {
     clearFields();
   }
 
-  return (
+  return(
     <Modal 
-      title="Add Account" 
+      title="Edit Product" 
       visible={visible} 
       onOk={handleOk} 
-      okText="Add" 
+      okText="Edit" 
       onCancel={handleCancel}
     >
-      <label><strong>Username</strong></label>
-      <Input 
-        value={username} 
-        onChange={(e) => setUsername(e.target.value)} 
-        placeholder="Enter username" 
-        onKeyPress={(e) => e.key === 'Enter' && handleOk()}
-      />
       <p style={{color: "#f00"}}>{errorMessage}</p>
-      <p>Note: Password will automatically generated.</p>
     </Modal>
   )
 };
 
-export default AddAccount;
+export default EditProduct;

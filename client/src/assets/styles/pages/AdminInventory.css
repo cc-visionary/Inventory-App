@@ -22,3 +22,58 @@
   box-shadow: 4px 4px 10px 4px rgba(0, 0, 0, 0.25);
   outline: none;
 }
+
+#admin-inventory .add-product-button {
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  color: #FFF;
+  border: none;
+  background-color: #1989F1;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+#admin-inventory .product-stats {
+  font-size: 16px;
+}
+
+#admin-inventory .count {
+  color: #1989F1;
+  font-weight: 900;
+}
+
+#admin-inventory table {
+  margin-top: 20px;
+  border-collapse: collapse;
+  border: 1px solid #C7C4C4;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+#admin-inventory thead th {
+  padding: 15px 0;
+}
+
+#admin-inventory tbody td {
+  padding: 5px 0;
+}
+
+#admin-inventory tr {
+  border: 1px solid #C7C4C4;
+}
+
+#admin-inventory button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#admin-inventory .edit-button img {
+  height: 19px;
+  width: 19px;
+}
+
+#admin-inventory .delete-button img {
+  height: 25px;
+  width: 25px;
+}
