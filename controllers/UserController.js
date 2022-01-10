@@ -111,6 +111,7 @@ const UserController = {
 
     if(userType !== 'admin' && userType !== 'user') {
       res.status(401).send("Usertype can only be `admin` or `user`");
+      return;
     }
 
     db.findOne(User, { _id }, (result) => {
