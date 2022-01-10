@@ -47,7 +47,7 @@ export default class UserInventory extends Component {
         <tbody>
           {
             // maps per user to the table
-            products.filter((item) => item.name.includes(searchValue)).map((item) => (
+            products.filter((item) => item.name.toLowerCase().includes(searchValue.toLowerCase())).map((item) => (
                 <tr key={item.name}>
                   <td>{item.name}</td>
                   <td>{item.supplier}</td>

@@ -81,8 +81,6 @@ export default class Users extends Component {
           this.setState({ editAccountError: "Confirm password cannot be empty" });
           return;
         }
-
-        console.log([previousPassword, newPassword, confirmNewPassword])
   
         if(previousPassword.length < 6 || newPassword.length < 6 || confirmNewPassword.length < 6) {
           this.setState({ editAccountError: "Password has to be atleast 6 characters" });

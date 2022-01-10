@@ -26,9 +26,6 @@ const UserEditAccount = ({ updateUser }) => {
       setErrorMessage("Username cannot be empty")
        (user.username)
       return;
-    } else if(username === user.username) {
-      setErrorMessage("Username cannot be the same")
-      return;
     } else if(username.length < 6) {
       setErrorMessage("Username has to be atleast 6 characters")
       setUsername(user.username)
@@ -78,6 +75,11 @@ const UserEditAccount = ({ updateUser }) => {
         setErrorMessage('New password and confirm new password must be the same.')
         return 
       }
+    } else {
+      if(username === user.username) {
+        setErrorMessage("Username cannot be the same")
+        return;
+      }
     }
 
     UserService.patchUser(user._id, username, 'user', editPasswordFlag ? previousPassword : null, editPasswordFlag ? newPassword : null)
@@ -103,6 +105,7 @@ const UserEditAccount = ({ updateUser }) => {
         placeholder='Username' 
         value={username} 
         onChange={(e) => setUsername(e.target.value)}
+        onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
       <br /><br />
       <Checkbox checked={editPasswordFlag} onChange={(e) => setEditPasswordFlag(e.target.checked)}>Edit Password</Checkbox>
@@ -112,6 +115,7 @@ const UserEditAccount = ({ updateUser }) => {
         value={previousPassword} 
         onChange={(e) => setPreviousPassword(e.target.value)}
         disabled={!editPasswordFlag}
+        onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
       <br />
       <input 
@@ -119,12 +123,14 @@ const UserEditAccount = ({ updateUser }) => {
         value={newPassword} 
         onChange={(e) => setNewPassword(e.target.value)}
         disabled={!editPasswordFlag}
+        onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
       <input 
         placeholder='Confirm New Password' 
         value={confirmNewPassword} 
         onChange={(e) => setConfirmNewPassword(e.target.value)}
         disabled={!editPasswordFlag}
+        onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
       <div className='error-message'>{errorMessage}</div>
       <button className='confirm-button' onClick={(e) => onConfirm(e)}>Confirm</button>
