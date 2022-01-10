@@ -4,9 +4,9 @@ const db = require('../models/database');
 const request = require('supertest');
 require("dotenv").config('../.env');
 
-// Insert test users in database before testing
+let product_id;
+// Insert test products in database before testing
 beforeAll(done => {
-
   db.connect(process.env.MONGODB_TEST_URL);
 
   const products = [
@@ -18,7 +18,6 @@ beforeAll(done => {
       quantity: 1,
       location: "Test Location",
       price: 10,
-      withdrawalAmount: 20
     },
     { 
       name: "test_product_2", 
@@ -28,20 +27,24 @@ beforeAll(done => {
       quantity: 2,
       location: "Test Location 2",
       price: 20,
-      withdrawalAmount: 30
     },
   ]
 
-  db.insertMany(Product, products, (res) => done());
+  db.dropCollection('products', () => {
+    db.insertMany(Product, products, (res) => {
+      product_id = res.result[0]._id.toString();
+      done();
+    });
+  })
 });
 
 // Delete test products in database after testing
 afterAll(done => {
-  db.deleteOne(Product, {name: "test_product_1"}, (res) => {
+  db.dropCollection('products', () => {
     db.disconnect(() => {
       done();
     });
-  });
+  })
 });
 
 // Unit Test 1: GET requests
@@ -55,6 +58,12 @@ describe('GET products', function() {
   it('gets the test product via name with a status code of 200,', (done) => {
     request(app)
       .get('/api/users/name/test_product_1')
+      .expect(200, done);
+  })
+
+  it('gets the test product via id with a status code of 200,', (done) => {
+    request(app)
+      .get(`/api/users/${product_id}`)
       .expect(200, done);
   })
 });
@@ -72,17 +81,46 @@ describe('POST products', function() {
         quantity: 0,
         location: "Test Location 0",
         price: 0,
-        withdrawalAmount: 0
       })
-      .expect(200).end(function(err, res) {
-        if (err) return done(err);
-        db.deleteOne(Product, {name: "test_product_0"}, (res) => {});
-        return done();
-      })
+      .expect(200, done);
   })
 });
 
-// Unit Test 3: DELETE requests
+
+// Unit Test 3: PATCH requests
+describe('PATCH products', function() {
+  it('patch a product', (done) => {
+    request(app)
+      .patch('/api/products')
+      .send({
+        prevName: "test_product_1",
+        name: "test_product_3", 
+        date: "01/04/2022", 
+        supplier: "Test Supplier 3",
+        quantity: 0,
+        location: "Test Location 3",
+        price: 0,
+      })
+      .expect(200, done)
+  })
+
+  it('no duplicate product name when editing', (done) => {
+    request(app)
+      .patch('/api/products')
+      .send({
+        prevName: "test_product_2",
+        name: "test_product_3", 
+        date: "01/04/2022", 
+        supplier: "Test Supplier 3",
+        quantity: 0,
+        location: "Test Location 3",
+        price: 0,
+      })
+      .expect(401, done)
+  })
+});
+
+// Unit Test 4: DELETE requests
 describe('DELETE products', function() {
   it('delete a product', (done) => {
     request(app)
@@ -90,5 +128,3 @@ describe('DELETE products', function() {
       .expect(200, done)
   })
 });
-
-// TODO: Unit Test 4: PATCH requests

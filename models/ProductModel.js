@@ -30,10 +30,6 @@ var ProductSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    withdrawalAmount: {
-        type: Number,
-        required: true
-    }
 });
 
 /*
