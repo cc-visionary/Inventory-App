@@ -9,8 +9,6 @@ router.get('/users', UserController.getAllUsers);
 
 router.get('/users/:id', UserController.getUserByID);
 
-router.get('/users/username/:username', UserController.getUserByUsername);
-
 router.post('/users/register', UserController.postRegister);
 
 router.post('/users/login', UserController.postLogin);
@@ -25,8 +23,6 @@ router.delete('/users/:id', UserController.deleteUser);
 router.get('/products', ProductController.getAllProducts);
 
 router.get('/products/:id', ProductController.getProductByID);
-
-router.get('/products/name/:name', ProductController.getProductByName);
 
 router.post('/products/add', ProductController.postAddProduct);
 

@@ -47,12 +47,6 @@ describe('GET users', function() {
       .expect(200, done);
   });
 
-  it('gets the admin account via username with a status code of 200,', (done) => {
-    request(app)
-      .get('/api/users/username/test_admin')
-      .expect(200, done);
-  })
-
   it('gets the admin account via id with a status code of 200,', (done) => {
     request(app)
       .get(`/api/users/${admin_id}`)

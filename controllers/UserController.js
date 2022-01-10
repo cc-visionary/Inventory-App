@@ -92,13 +92,7 @@ const UserController = {
   getAllUsers: (req, res) => {
     db.findMany(User, {}, (result) => defaultCallback(res, result));
   },
-
-  getUserByUsername: (req, res) => {
-    const { username } = req.params;
-
-    db.findOne(User, { username }, (result) => defaultCallback(res, result));
-  },
-
+  
   // mainly changes the password of the user
   patchUser: (req, res) => {
     const { 

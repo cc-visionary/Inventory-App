@@ -45,12 +45,6 @@ const ProductController = {
     db.findMany(Product, {}, (result) => defaultCallback(res, result));
   },
 
-  getProductByName: (req, res) => {
-    const { name } = req.params;
-
-    db.findOne(Product, { name }, (result) => defaultCallback(res, result));
-  },
-
   patchProduct: (req, res) => {
     const {
       supplier,
