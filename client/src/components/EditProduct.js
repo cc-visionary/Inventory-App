@@ -60,7 +60,7 @@ const EditProduct = ({ product, errorMessage, visible, onOk, onCancel }) => {
             min={1}
             value={quantity} 
             onChange={(val) => setQuantity(val)} 
-            placeholder="Enter product name" 
+            placeholder="Enter quantity" 
             onKeyPress={(e) => e.key === 'Enter' && handleOk()}
             style={{width: '100%'}} 
           />
@@ -72,7 +72,7 @@ const EditProduct = ({ product, errorMessage, visible, onOk, onCancel }) => {
             min={1}
             value={price} 
             onChange={(val) => setPrice(val)} 
-            placeholder="Enter product name" 
+            placeholder="Enter price" 
             onKeyPress={(e) => e.key === 'Enter' && handleOk()}
             style={{width: '100%'}} 
           />
@@ -83,7 +83,7 @@ const EditProduct = ({ product, errorMessage, visible, onOk, onCancel }) => {
         name="supplier"
         value={supplier} 
         onChange={(e) => setSupplier(e.target.value)} 
-        placeholder="Enter product name" 
+        placeholder="Enter supplier" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
       />
       <label><strong>Stock Location</strong></label>
@@ -91,7 +91,7 @@ const EditProduct = ({ product, errorMessage, visible, onOk, onCancel }) => {
         name="location"
         value={location} 
         onChange={(e) => setLocation(e.target.value)} 
-        placeholder="Enter product name" 
+        placeholder="Enter location" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
       />
       <label><strong>Date Purchased</strong></label>
