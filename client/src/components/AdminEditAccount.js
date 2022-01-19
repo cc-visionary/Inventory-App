@@ -14,15 +14,13 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
-    if(user != null) {
-      setUsername(user.username);
-      setRole(user.userType);
-    }
+    clearFields();
   }, [user]);
 
   const clearFields = () => {
     if(user != null) {
       setUsername(user.username)
+      setRole(user.userType);
     }
     setPreviousPassword('');
     setNewPassword('');

@@ -103,39 +103,71 @@ const UserController = {
       newPassword,
     } = req.body;
 
+    if(userType !== 'admin' && userType !== 'user') {
+      res.status(401).send("Usertype can only be `admin` or `user`");
+      return;
+    }
+
     db.findOne(User, { _id }, (result) => {
       const data = result.result;
       
-      db.findOne(User, { username }, (r) => {
-        if(username == data.username && r.result != null) {
-          // if matches a user, but incorrect password
-          res.status(401).send("Username already exists");
-        } else {
-          if(previousPassword != null && newPassword != null) {
-            bcrypt.compare(previousPassword, data.password, function(err, isEqual) {
-              if(isEqual) {
-                const user = {
-                  username,
-                  userType,
-                  password: bcrypt.hashSync(newPassword, saltRounds),
-                }
-    
-                db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
-              } else {
-                // if matches a user, but incorrect password
-                res.status(401).send("Previous password is incorrect");
-              }
-            });
-          } else {
-            const user = {
-              username,
-              userType
-            }
-    
-            db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
+      // if username isn't going to be changed, there's no need to check if username exists
+      if(username === data.username) {
+        if(previousPassword != null && newPassword != null) {
+          const user = {
+            username,
+            userType,
+            password: bcrypt.hashSync(newPassword, saltRounds),
           }
+
+          bcrypt.compare(previousPassword, data.password, function(err, isEqual) {
+            console.log(isEqual);
+            if(isEqual) db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
+            else {
+              // if matches a user, but incorrect password
+              res.status(401).send("Previous password is incorrect");
+            }
+          });
+        } else {
+          const user = {
+            username,
+            userType
+          }
+  
+          db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
         }
-      })
+      } else {
+        db.findOne(User, { username }, (r) => {
+          if(r.result != null) {
+            // if matches a user, but incorrect password
+            res.status(401).send("Username already exists");
+          } else {
+            if(previousPassword != null && newPassword != null) {
+              const user = {
+                username,
+                userType,
+                password: bcrypt.hashSync(newPassword, saltRounds),
+              }
+  
+              bcrypt.compare(previousPassword, data.password, function(err, isEqual) {
+                console.log(isEqual);
+                if(isEqual) db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
+                else {
+                  // if matches a user, but incorrect password
+                  res.status(401).send("Previous password is incorrect");
+                }
+              });
+            } else {
+              const user = {
+                username,
+                userType
+              }
+      
+              db.updateOne(User, { _id }, user, (result) => res.status(200).send({...result, result: {_id, username, userType}}));
+            }
+          }
+        })
+      }
     });
   },
 

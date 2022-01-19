@@ -8,6 +8,7 @@ import editIcon from '../assets/images/Edit Icon.svg';
 import trashIcon from '../assets/images/Trash Icon.svg';
 
 import '../assets/styles/pages/AdminInventory.css';
+import moment from 'moment';
 
 export default class AdminInventory extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ export default class AdminInventory extends Component {
     const { products, count } = this.state;
 
     if(productName === null || productName === '') {
-      this.setState({ addProductError: "Username cannot empty" });
+      this.setState({ addProductError: "Product Name cannot be empty" });
       return;
     }
 
@@ -57,12 +58,12 @@ export default class AdminInventory extends Component {
     }
 
     if(location === null || location === '') {
-      this.setState({ addProductError: "Stock Location cannot empty" });
+      this.setState({ addProductError: "Stock Location cannot be empty" });
       return;
     }
 
     if(datePurchased === null) {
-      this.setState({ addProductError: "Date Purchased cannot empty" });
+      this.setState({ addProductError: "Date Purchased cannot be empty" });
       return;
     }
 
@@ -90,14 +91,79 @@ export default class AdminInventory extends Component {
       });
     }
 
-  editProduct() {
+  editProduct(productName, quantity, price, supplier, location, datePurchased) {
+    const { products, toBeEdited } = this.state;
 
+    if(productName === null || productName === '') {
+      this.setState({ editProductError: "Product Name cannot be empty" });
+      return;
+    }
+
+    if(quantity < 1) {
+      this.setState({ editProductError: "Quantity has to be greater than 0" });
+      return;
+    }
+
+    if(price < 1) {
+      this.setState({ editProductError: "Price has to be greater than 0" });
+      return;
+    }
+
+    if(supplier === null || supplier === '') {
+      this.setState({ editProductError: "Supplier cannot be empty" });
+      return;
+    }
+
+    if(location === null || location === '') {
+      this.setState({ editProductError: "Stock Location cannot be empty" });
+      return;
+    }
+
+    if(datePurchased === null) {
+      this.setState({ editProductError: "Date Purchased cannot be empty" });
+      return;
+    }
+
+    const previousDate = moment(toBeEdited.date)
+    const presentDate = moment(datePurchased)
+
+    if(previousDate.format('MMMM DD, YYYY') === presentDate.format('MMMM DD, YYYY') && toBeEdited.name === productName && toBeEdited.quantity === quantity && toBeEdited.price === price && toBeEdited.price === price && toBeEdited.location === location && toBeEdited.supplier === supplier) {
+      this.setState({ editProductError: "There were no changes made" });
+      return;
+    }
+
+    const product = {
+      supplier,
+      location,
+      date: datePurchased,
+      name: productName,
+      quantity,
+      prevName: toBeEdited.name,
+      price
+    }
+
+    ProductService.patchProduct(product)
+      .then((res) => {
+        const { result } = res.data;
+
+        console.log(result)
+
+        alert("Product has been successfully updated.")
+        
+        const index = products.indexOf(toBeEdited);
+        this.setState({ products: [...products.slice(0, index), result, ...products.slice(index + 1)], toBeEdited: null, editProductVisible: false, editProductError: "" })
+      })
+      .catch((err) => {
+        const { data } = err.response;
+
+        this.setState({ editProductError: data });
+      })
   }
 
   onDelete(product) {
     const { products } = this.state;
 
-    // asks for admin confirmation on whether or not to delete the user
+    // asks for admin confirmation on whether or not to delete the product
     Modal.confirm({
       title: `Are you sure you want to delete ${product.name}`,
       onOk: async () => {
@@ -152,13 +218,13 @@ export default class AdminInventory extends Component {
         <tbody>
           {
             // maps per product to the table
-            products.filter((item) => item.name.includes(searchValue)).map((item) => (
+            products.filter((item) => item.name.toLowerCase().includes(searchValue.toLowerCase())).map((item) => (
                 <tr key={item.name}>
                   <td>{item.dateString}</td>
                   <td>{item.name}</td>
                   <td>{item.supplier}</td>
                   <td>{item.quantity}</td>
-                  <td>P {item.price}</td>
+                  <td>P {parseFloat(item.price).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
                   <td>{item.location}</td>
                   <td>
                     <button 
