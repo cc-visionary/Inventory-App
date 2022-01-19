@@ -236,7 +236,7 @@ export default class Users extends Component {
                   <button 
                     className="delete-button" 
                     onClick={() => this.onDelete(user)} 
-                    disabled={user === "admin"}
+                    disabled={user.username === getUser().username}
                   >
                     <img src={trashIcon} alt="Delete" />
                   </button>
