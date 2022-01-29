@@ -105,7 +105,9 @@ export default class Users extends Component {
         .then((res) => {
           const { result } = res.data;
 
-          alert(`Edit was successful`)
+          Modal.success({
+            content: 'User has been successfully updated',
+          });
           
           const index = users.indexOf(toBeEdited);
 
@@ -136,7 +138,9 @@ export default class Users extends Component {
           const index = users.indexOf(user);
           const updatedUsers = [...users.slice(0, index), ...users.slice(index + 1)];
           this.setState({ users: updatedUsers, count: updatedUsers.length });
-          alert(`Deletion was successful`)
+          Modal.success({
+            content: 'User has been successfully deleted.',
+          });
         })
         .catch((err) => {
           console.log(err.response.data);

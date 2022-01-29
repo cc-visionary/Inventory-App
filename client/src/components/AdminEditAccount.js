@@ -64,6 +64,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <br />
       <label><strong>Previous Password</strong></label>
       <Input 
+        type='password'
         value={previousPassword} 
         onChange={(e) => setPreviousPassword(e.target.value)} 
         placeholder="Enter previous password" 
@@ -73,6 +74,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <br /><br />
       <label><strong>New Password</strong></label>
       <Input 
+        type='password'
         value={newPassword} 
         onChange={(e) => setNewPassword(e.target.value)} 
         placeholder="Enter current password" 
@@ -81,6 +83,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       />
       <label><strong>Confirm Password</strong></label>
       <Input 
+        type='password'
         value={confirmPassword} 
         onChange={(e) => setConfirmPassword(e.target.value)} 
         placeholder="Confirm your password" 
