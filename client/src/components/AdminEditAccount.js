@@ -30,11 +30,13 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
   const handleOk = () => {
     onOk(username, role, editPasswordFlag, previousPassword, newPassword, confirmPassword);
     clearFields();
+    setEditPasswordFlag(false);
   }
 
   const handleClose = () => {
     onCancel();
     clearFields();
+    setEditPasswordFlag(false);
   }
 
   return (

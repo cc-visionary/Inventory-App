@@ -46,7 +46,7 @@ export default class Users extends Component {
         this.setState({ editAccountError: "Username cannot be empty" });
         return;
       } else if(username.length < 6) {
-        this.setState({ editAccountError: "Username has to be atleast 6 characters" })
+        this.setState({ editAccountError: "Username has to be at least 6 characters" })
         return;
       } else if(username.length > 30) {
         this.setState({ editAccountError: "Username has to be atmost 30 characters" })
@@ -83,7 +83,7 @@ export default class Users extends Component {
         }
   
         if(previousPassword.length < 6 || newPassword.length < 6 || confirmNewPassword.length < 6) {
-          this.setState({ editAccountError: "Password has to be atleast 6 characters" });
+          this.setState({ editAccountError: "Password has to be at least 6 characters" });
           return 
         }
     
@@ -156,7 +156,7 @@ export default class Users extends Component {
       this.setState({ addAccountError: "Username cannot be empty" })
       return;
     } else if(username.length < 6) {
-      this.setState({ addAccountError: "Username has to be atleast 6 characters" })
+      this.setState({ addAccountError: "Username has to be at least 6 characters" })
       return;
     } else if(username.length > 30) {
       this.setState({ addAccountError: "Username has to be atmost 30 characters" })
