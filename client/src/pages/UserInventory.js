@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import { DatePicker } from 'antd';
+import moment from 'moment';
+
+import { ProductService } from '../services';
 
 import '../assets/styles/pages/UserInventory.css';
-import { ProductService } from '../services';
+
+const { RangePicker } = DatePicker;
 
 export default class UserInventory extends Component {
   constructor(props) {
@@ -10,6 +15,8 @@ export default class UserInventory extends Component {
     this.state = {
       searchValue: '',
       products: [],
+      fromDateFilter: null,
+      toDateFilter: null,
     };
   }
 
@@ -21,18 +28,39 @@ export default class UserInventory extends Component {
     })
   }
 
+  resetFilter() {
+    this.setState({ searchValue: '', fromDateFilter: null, toDateFilter: null })
+  }
+
   render() {
-    const { searchValue, products } = this.state;
+    const { searchValue, products, fromDateFilter, toDateFilter } = this.state;
 
     return (
     <div id='user-inventory'>
     <div className="header">
-      <input 
-        className="search-input" 
-        placeholder="Search" 
-        onChange={(e) => this.setState({ searchValue: e.target.value })} 
-        value={searchValue} 
-      />
+      <div>
+        <input 
+          className="search-input" 
+          placeholder="Search" 
+          onChange={(e) => this.setState({ searchValue: e.target.value })} 
+          value={searchValue} 
+        />
+        <RangePicker 
+          ranges={{
+            Today: [moment(), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+          }}
+          value={[fromDateFilter, toDateFilter]} 
+          onChange={(val) => this.setState({ fromDateFilter: val === null ? null : val[0], toDateFilter: val === null ? null : val[1]})} 
+          bordered={false} 
+        />
+        <button 
+          className="header-product-button" 
+          onClick={() => this.resetFilter()}
+        >
+          Reset Filter
+        </button>
+      </div>
       <></>
     </div>
       <table>
@@ -47,7 +75,7 @@ export default class UserInventory extends Component {
         <tbody>
           {
             // maps per user to the table
-            products.filter((item) => item.name.toLowerCase().includes(searchValue.toLowerCase())).map((item) => (
+            products.filter((item) => (item.name.toLowerCase().includes(searchValue.toLowerCase()) && (fromDateFilter === null || toDateFilter === null || (moment(item.date) >= fromDateFilter && moment(item.date) <= toDateFilter)))).map((item) => (
                 <tr key={item.name}>
                   <td>{item.name}</td>
                   <td>{item.supplier}</td>

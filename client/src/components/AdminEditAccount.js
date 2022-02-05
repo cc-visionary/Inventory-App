@@ -50,7 +50,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <label><strong>Username</strong></label>
       <Input 
         value={username} 
-        onChange={(e) => setUsername(e.target.value)} 
+        onChange={(e) => setUsername(e.target.value.trim())} 
         placeholder="Enter username" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
       />
@@ -68,7 +68,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <Input 
         type='password'
         value={previousPassword} 
-        onChange={(e) => setPreviousPassword(e.target.value)} 
+        onChange={(e) => setPreviousPassword(e.target.value.trim())} 
         placeholder="Enter previous password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
         disabled={!editPasswordFlag}
@@ -78,7 +78,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <Input 
         type='password'
         value={newPassword} 
-        onChange={(e) => setNewPassword(e.target.value)} 
+        onChange={(e) => setNewPassword(e.target.value.trim())} 
         placeholder="Enter current password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
         disabled={!editPasswordFlag}
@@ -87,7 +87,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <Input 
         type='password'
         value={confirmPassword} 
-        onChange={(e) => setConfirmPassword(e.target.value)} 
+        onChange={(e) => setConfirmPassword(e.target.value.trim())} 
         placeholder="Confirm your password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
         disabled={!editPasswordFlag}

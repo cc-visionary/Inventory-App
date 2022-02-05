@@ -30,7 +30,7 @@ const AddAccount = ({ errorMessage, visible, onOk, onCancel }) => {
       <label><strong>Username</strong></label>
       <Input 
         value={username} 
-        onChange={(e) => setUsername(e.target.value)} 
+        onChange={(e) => setUsername(e.target.value.trim())} 
         placeholder="Enter username" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
       />

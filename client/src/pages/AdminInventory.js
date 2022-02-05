@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { DatePicker, Modal } from 'antd';
+import moment from 'moment';
 
 import { ProductService } from '../services';
 import { AddProduct, EditProduct } from '../components';
@@ -8,7 +9,8 @@ import editIcon from '../assets/images/Edit Icon.svg';
 import trashIcon from '../assets/images/Trash Icon.svg';
 
 import '../assets/styles/pages/AdminInventory.css';
-import moment from 'moment';
+
+const { RangePicker } = DatePicker;
 
 export default class AdminInventory extends Component {
   constructor(props) {
@@ -23,6 +25,8 @@ export default class AdminInventory extends Component {
       addProductError: '',
       editProductVisible: false,
       editProductError: '',
+      fromDateFilter: null,
+      toDateFilter: null,
     };
   }
 
@@ -36,6 +40,10 @@ export default class AdminInventory extends Component {
 
   addProduct(productName, quantity, price, supplier, location, datePurchased) {
     const { products, count } = this.state;
+
+    productName = productName.trim();
+    supplier = supplier.trim();
+    location = location.trim();
 
     if(productName === null || productName === '') {
       this.setState({ addProductError: "Product Name cannot be empty" });
@@ -96,6 +104,10 @@ export default class AdminInventory extends Component {
 
   editProduct(productName, quantity, price, supplier, location, datePurchased) {
     const { products, toBeEdited } = this.state;
+
+    productName = productName.trim();
+    supplier = supplier.trim();
+    location = location.trim();
 
     if(productName === null || productName === '') {
       this.setState({ editProductError: "Product Name cannot be empty" });
@@ -188,19 +200,38 @@ export default class AdminInventory extends Component {
     });
   }
 
+  resetFilter() {
+    this.setState({ searchValue: '', fromDateFilter: null, toDateFilter: null })
+  }
+
   render() {
-    const { searchValue, products, count, addProductVisible, addProductError, editProductVisible, editProductError, toBeEdited } = this.state;
+    const { searchValue, products, count, addProductVisible, addProductError, editProductVisible, editProductError, toBeEdited, fromDateFilter, toDateFilter } = this.state;
     return <div id='admin-inventory'>
-    <div className="header">
-      <div>
+    <div className='header'>
+      <div className='left'>
         <input 
           className="search-input" 
           placeholder="Search" 
           onChange={(e) => this.setState({ searchValue: e.target.value })} 
           value={searchValue} 
         />
+        <RangePicker 
+          ranges={{
+            'Today': [moment(), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+          }}
+          value={[fromDateFilter, toDateFilter]} 
+          onChange={(val) => this.setState({ fromDateFilter: val === null ? null : val[0], toDateFilter: val === null ? null : val[1]})} 
+          bordered={false} 
+        />
         <button 
-          className="add-product-button" 
+          className="header-product-button" 
+          onClick={() => this.resetFilter()}
+        >
+          Reset Filter
+        </button>
+        <button 
+          className="header-product-button" 
           onClick={() => this.setState({ addProductVisible: true })}
         >
           Add Product
@@ -225,7 +256,7 @@ export default class AdminInventory extends Component {
         <tbody>
           {
             // maps per product to the table
-            products.filter((item) => item.name.toLowerCase().includes(searchValue.toLowerCase())).map((item) => (
+            products.filter((item) => (item.name.toLowerCase().includes(searchValue.toLowerCase()) && (fromDateFilter === null || toDateFilter === null || (moment(item.date) >= fromDateFilter && moment(item.date) <= toDateFilter)))).map((item) => (
                 <tr key={item.name}>
                   <td>{item.dateString}</td>
                   <td>{item.name}</td>

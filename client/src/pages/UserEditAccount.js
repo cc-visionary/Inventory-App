@@ -106,7 +106,7 @@ const UserEditAccount = ({ updateUser }) => {
       <input 
         placeholder='Username' 
         value={username} 
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={(e) => setUsername(e.target.value.trim())}
         onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
       <br /><br />
@@ -116,7 +116,7 @@ const UserEditAccount = ({ updateUser }) => {
         type='password'
         placeholder='Previous Password' 
         value={previousPassword} 
-        onChange={(e) => setPreviousPassword(e.target.value)}
+        onChange={(e) => setPreviousPassword(e.target.value.trim())}
         disabled={!editPasswordFlag}
         onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
@@ -125,7 +125,7 @@ const UserEditAccount = ({ updateUser }) => {
         type='password'
         placeholder='New Password' 
         value={newPassword} 
-        onChange={(e) => setNewPassword(e.target.value)}
+        onChange={(e) => setNewPassword(e.target.value.trim())}
         disabled={!editPasswordFlag}
         onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
@@ -133,7 +133,7 @@ const UserEditAccount = ({ updateUser }) => {
         type='password'
         placeholder='Confirm New Password' 
         value={confirmNewPassword} 
-        onChange={(e) => setConfirmNewPassword(e.target.value)}
+        onChange={(e) => setConfirmNewPassword(e.target.value.trim())}
         disabled={!editPasswordFlag}
         onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />

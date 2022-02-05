@@ -201,7 +201,7 @@ export default class Users extends Component {
         <input 
           className="search-input" 
           placeholder="Search" 
-          onChange={(e) => this.setState({ searchValue: e.target.value })} 
+          onChange={(e) => this.setState({ searchValue: e.target.value.trim() })} 
           value={searchValue} 
         />
         <button 
