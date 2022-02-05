@@ -81,7 +81,10 @@ export default class AdminInventory extends Component {
         const { result } = res.data
       
         this.setState({ products: [...products, result], count: count + 1, addProductVisible: false, addProductError: "" })
-        alert("Product has been successfully added.")
+        
+        Modal.success({
+          content: 'Product has been successfully added.',
+        });
       })
       .catch((err) => {
         const { error } = err.response.data;
@@ -148,7 +151,9 @@ export default class AdminInventory extends Component {
 
         console.log(result)
 
-        alert("Product has been successfully updated.")
+        Modal.success({
+          content: 'Product has been successfully updated.',
+        });
         
         const index = products.indexOf(toBeEdited);
         this.setState({ products: [...products.slice(0, index), result, ...products.slice(index + 1)], toBeEdited: null, editProductVisible: false, editProductError: "" })
@@ -172,7 +177,9 @@ export default class AdminInventory extends Component {
           const index = products.indexOf(product);
           const updatedProducts = [...products.slice(0, index), ...products.slice(index + 1)];
           this.setState({ products: updatedProducts, count: updatedProducts.length });
-          alert(`Deletion was successful`)
+          Modal.success({
+            content: 'Product has been successfully deleted.',
+          });
         })
         .catch((err) => {
           console.log(err.response.data);
