@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { Modal, Pagination } from 'antd';
 
 import { AddAccount, AdminEditAccount } from '../components';
 import { UserService } from '../services';
@@ -23,6 +23,8 @@ export default class Users extends Component {
       addAccountError: '',
       editAccountError: '',
       toBeEdited: null,
+      currentPage: 1,
+      itemsPerPage: 10,
     }
   }
 
@@ -193,7 +195,7 @@ export default class Users extends Component {
   }
 
   render() {
-    const { users, searchValue, count, addAccountVisible, addAccountError, editAccountVisible, editAccountError, toBeEdited } = this.state;
+    const { users, searchValue, count, addAccountVisible, addAccountError, editAccountVisible, editAccountError, toBeEdited, currentPage, itemsPerPage } = this.state;
 
     return <div id="users-page">
     <div className="header">
@@ -226,7 +228,10 @@ export default class Users extends Component {
       <tbody>
         {
           // maps each user to the table
-          users.filter((user) => user.username.toLowerCase().includes(searchValue.toLowerCase())).map((user) => (
+          users
+            .filter((user) => user.username.toLowerCase().includes(searchValue.toLowerCase()))
+            .slice((currentPage - 1) * itemsPerPage, (currentPage - 1) * itemsPerPage + itemsPerPage)
+            .map((user) => (
               <tr>
                 <td>{user.username}</td>
                 <td>{user.userType}</td>
@@ -251,6 +256,12 @@ export default class Users extends Component {
         }
       </tbody>
     </table>
+    <Pagination 
+      current={currentPage} 
+      pageSize={itemsPerPage} 
+      total={users.filter((item) => item.username.toLowerCase().includes(searchValue.toLowerCase())).length} 
+      onChange={(page) => this.setState({ currentPage: page })} 
+    />
     <AddAccount 
       visible={addAccountVisible} 
       onOk={(username) => this.addAccount(username)} 

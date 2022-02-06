@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DatePicker, Modal } from 'antd';
+import { DatePicker, Modal, Pagination } from 'antd';
 import moment from 'moment';
 
 import { ProductService } from '../services';
@@ -27,6 +27,8 @@ export default class AdminInventory extends Component {
       editProductError: '',
       fromDateFilter: null,
       toDateFilter: null,
+      currentPage: 1,
+      itemsPerPage: 10,
     };
   }
 
@@ -34,7 +36,7 @@ export default class AdminInventory extends Component {
     ProductService.getAllProducts().then((res) => {
       const { result: products } = res.data;
 
-      this.setState({ products, count: products.length });
+      this.setState({ products: products.sort((a, b) => moment(a.dateString) - moment(b.dateString)), count: products.length });
     })
   }
 
@@ -88,7 +90,7 @@ export default class AdminInventory extends Component {
       .then((res) => {
         const { result } = res.data
       
-        this.setState({ products: [...products, result], count: count + 1, addProductVisible: false, addProductError: "" })
+        this.setState({ products: [...products, result].sort((a, b) => moment(a.dateString) - moment(b.dateString)), count: count + 1, addProductVisible: false, addProductError: "" })
         
         Modal.success({
           content: 'Product has been successfully added.',
@@ -161,14 +163,12 @@ export default class AdminInventory extends Component {
       .then((res) => {
         const { result } = res.data;
 
-        console.log(result)
-
         Modal.success({
           content: 'Product has been successfully updated.',
         });
         
         const index = products.indexOf(toBeEdited);
-        this.setState({ products: [...products.slice(0, index), result, ...products.slice(index + 1)], toBeEdited: null, editProductVisible: false, editProductError: "" })
+        this.setState({ products: [...products.slice(0, index), result, ...products.slice(index + 1)].sort((a, b) => moment(a.dateString) - moment(b.dateString)), toBeEdited: null, editProductVisible: false, editProductError: "" })
       })
       .catch((err) => {
         const { data } = err.response;
@@ -187,7 +187,7 @@ export default class AdminInventory extends Component {
         ProductService.deleteProduct(product.name)
         .then(() => {
           const index = products.indexOf(product);
-          const updatedProducts = [...products.slice(0, index), ...products.slice(index + 1)];
+          const updatedProducts = [...products.slice(0, index), ...products.slice(index + 1)].sort((a, b) => moment(a.dateString) - moment(b.dateString));
           this.setState({ products: updatedProducts, count: updatedProducts.length });
           Modal.success({
             content: 'Product has been successfully deleted.',
@@ -205,14 +205,14 @@ export default class AdminInventory extends Component {
   }
 
   render() {
-    const { searchValue, products, count, addProductVisible, addProductError, editProductVisible, editProductError, toBeEdited, fromDateFilter, toDateFilter } = this.state;
+    const { searchValue, products, count, addProductVisible, addProductError, editProductVisible, editProductError, toBeEdited, fromDateFilter, toDateFilter, currentPage, itemsPerPage } = this.state;
     return <div id='admin-inventory'>
     <div className='header'>
       <div className='left'>
         <input 
           className="search-input" 
           placeholder="Search" 
-          onChange={(e) => this.setState({ searchValue: e.target.value })} 
+          onChange={(e) => this.setState({ currentPage: 1, searchValue: e.target.value })} 
           value={searchValue} 
         />
         <RangePicker 
@@ -221,7 +221,7 @@ export default class AdminInventory extends Component {
             'This Month': [moment().startOf('month'), moment().endOf('month')],
           }}
           value={[fromDateFilter, toDateFilter]} 
-          onChange={(val) => this.setState({ fromDateFilter: val === null ? null : val[0], toDateFilter: val === null ? null : val[1]})} 
+          onChange={(val) => this.setState({ currentPage: 1, fromDateFilter: val === null ? null : val[0].set("hour", 0).set("minute", 0).set("second", 0), toDateFilter: val === null ? null : val[1].set("hour", 23).set("minute", 59).set("second", 59)})} 
           bordered={false} 
         />
         <button 
@@ -256,11 +256,14 @@ export default class AdminInventory extends Component {
         <tbody>
           {
             // maps per product to the table
-            products.filter((item) => (item.name.toLowerCase().includes(searchValue.toLowerCase()) && (fromDateFilter === null || toDateFilter === null || (moment(item.date) >= fromDateFilter && moment(item.date) <= toDateFilter)))).map((item) => (
+            products
+              .filter((item) => (item.name.toLowerCase().includes(searchValue.toLowerCase()) && (fromDateFilter === null || toDateFilter === null || (moment(item.date) >= fromDateFilter && moment(item.date) <= toDateFilter))))
+              .slice((currentPage - 1) * itemsPerPage, (currentPage - 1) * itemsPerPage + itemsPerPage)
+              .map((item) => (
                 <tr key={item.name}>
                   <td>{item.dateString}</td>
                   <td>{item.name}</td>
-                  <td>{item.supplier}</td>
+                  <td>{item.supplier}</td>  
                   <td>{item.quantity}</td>
                   <td>P {parseFloat(item.price).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
                   <td>{item.location}</td>
@@ -284,6 +287,12 @@ export default class AdminInventory extends Component {
           }
         </tbody>
       </table>
+      <Pagination 
+        current={currentPage} 
+        pageSize={itemsPerPage} 
+        total={products.filter((item) => (item.name.toLowerCase().includes(searchValue.toLowerCase()) && (fromDateFilter === null || toDateFilter === null || (moment(item.date) >= fromDateFilter && moment(item.date) <= toDateFilter)))).length} 
+        onChange={(page) => this.setState({ currentPage: page })} 
+      />
       <AddProduct 
         errorMessage={addProductError} 
         visible={addProductVisible}

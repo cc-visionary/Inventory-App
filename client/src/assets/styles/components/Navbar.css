@@ -21,9 +21,13 @@
   flex: 1;
 }
 
-#navbar .logout-button {
+#navbar .right {
   flex: 1;
-  display: block;
+  text-align: right;
+}
+
+#navbar .logout-button {
+  display: inline;
   border: none;
   background-color: transparent;
   font-family: 'Montserrat', sans-serif;

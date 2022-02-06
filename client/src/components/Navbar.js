@@ -27,7 +27,9 @@ const Navbar = ({ username }) => {
       <a href="/inventory" className={window.location.pathname === '/inventory' ? "active" : ""}>Inventory</a>
       {getUser().userType === "user" ? <a href="/edit" className={window.location.pathname === '/edit' ? "active" : ""}>Edit</a> : <></>}
     </div>
-    <button className="logout-button" onClick={() => onLogout()}>Log out</button>
+    <div className='right'>
+      <button className="logout-button" onClick={() => onLogout()}>Log out</button>
+    </div>
   </div>
 }
 
