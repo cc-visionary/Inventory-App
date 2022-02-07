@@ -5,9 +5,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url('../../images/Login\ Background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 #login-page .card {
+  background-color: #FFF;
   padding: 20px 50px;
   height: fit-content;
   width: fit-content;
@@ -41,6 +45,8 @@
   margin-top: 10px;
   width: 100%;
   padding: 10px;
+  border: #000 solid 1px;
+  border-radius: 6px;
 }
 
 #login-page button {

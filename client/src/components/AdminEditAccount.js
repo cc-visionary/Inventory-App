@@ -30,11 +30,13 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
   const handleOk = () => {
     onOk(username, role, editPasswordFlag, previousPassword, newPassword, confirmPassword);
     clearFields();
+    setEditPasswordFlag(false);
   }
 
   const handleClose = () => {
     onCancel();
     clearFields();
+    setEditPasswordFlag(false);
   }
 
   return (
@@ -48,7 +50,7 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <label><strong>Username</strong></label>
       <Input 
         value={username} 
-        onChange={(e) => setUsername(e.target.value)} 
+        onChange={(e) => setUsername(e.target.value.trim())} 
         placeholder="Enter username" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
       />
@@ -64,8 +66,9 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <br />
       <label><strong>Previous Password</strong></label>
       <Input 
+        type='password'
         value={previousPassword} 
-        onChange={(e) => setPreviousPassword(e.target.value)} 
+        onChange={(e) => setPreviousPassword(e.target.value.trim())} 
         placeholder="Enter previous password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
         disabled={!editPasswordFlag}
@@ -73,16 +76,18 @@ const AdminEditAccount = ({ user, errorMessage, visible, onOk, onCancel }) => {
       <br /><br />
       <label><strong>New Password</strong></label>
       <Input 
+        type='password'
         value={newPassword} 
-        onChange={(e) => setNewPassword(e.target.value)} 
+        onChange={(e) => setNewPassword(e.target.value.trim())} 
         placeholder="Enter current password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
         disabled={!editPasswordFlag}
       />
       <label><strong>Confirm Password</strong></label>
       <Input 
+        type='password'
         value={confirmPassword} 
-        onChange={(e) => setConfirmPassword(e.target.value)} 
+        onChange={(e) => setConfirmPassword(e.target.value.trim())} 
         placeholder="Confirm your password" 
         onKeyPress={(e) => e.key === 'Enter' && handleOk()}
         disabled={!editPasswordFlag}

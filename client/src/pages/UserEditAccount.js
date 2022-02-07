@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox } from 'antd';
+import { Checkbox, Modal } from 'antd';
 
 import { UserService } from '../services';
 import { getUser, setUserLocal } from '../utils/store';
@@ -89,7 +89,9 @@ const UserEditAccount = ({ updateUser }) => {
         setUserLocal(result)
         setErrorMessage('');
         updateUser(result.username)
-        alert('Successfully edited the account')
+        Modal.success({
+          content: 'Successfully edited the account',
+        });
       }) 
       .catch((err) => {
         const { data } = err.response;
@@ -104,31 +106,34 @@ const UserEditAccount = ({ updateUser }) => {
       <input 
         placeholder='Username' 
         value={username} 
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={(e) => setUsername(e.target.value.trim())}
         onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
       <br /><br />
       <Checkbox checked={editPasswordFlag} onChange={(e) => setEditPasswordFlag(e.target.checked)}>Edit Password</Checkbox>
       <br />
       <input 
+        type='password'
         placeholder='Previous Password' 
         value={previousPassword} 
-        onChange={(e) => setPreviousPassword(e.target.value)}
+        onChange={(e) => setPreviousPassword(e.target.value.trim())}
         disabled={!editPasswordFlag}
         onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
       <br />
       <input 
+        type='password'
         placeholder='New Password' 
         value={newPassword} 
-        onChange={(e) => setNewPassword(e.target.value)}
+        onChange={(e) => setNewPassword(e.target.value.trim())}
         disabled={!editPasswordFlag}
         onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />
       <input 
+        type='password'
         placeholder='Confirm New Password' 
         value={confirmNewPassword} 
-        onChange={(e) => setConfirmNewPassword(e.target.value)}
+        onChange={(e) => setConfirmNewPassword(e.target.value.trim())}
         disabled={!editPasswordFlag}
         onKeyPress={(e) => e.key === 'Enter' && onConfirm(e)}
       />

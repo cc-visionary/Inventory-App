@@ -52,14 +52,14 @@ const Login = () => {
         type="text" 
         placeholder="Username"
         value={username} 
-        onChange={(e) => setUsername(e.target.value)} 
+        onChange={(e) => setUsername(e.target.value.trim())} 
         onKeyPress={(e) => e.key === 'Enter' && onSignin()}
       />
       <input 
         type="password" 
         placeholder="Password"
         value={password} 
-        onChange={(e) => setPassword(e.target.value)} 
+        onChange={(e) => setPassword(e.target.value.trim())} 
         onKeyPress={(e) => e.key === 'Enter' && onSignin()}
       />
       <p className="error-message">{errorMessage}</p>

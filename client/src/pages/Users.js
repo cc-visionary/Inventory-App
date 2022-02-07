@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { Modal, Pagination } from 'antd';
 
 import { AddAccount, AdminEditAccount } from '../components';
 import { UserService } from '../services';
@@ -23,6 +23,8 @@ export default class Users extends Component {
       addAccountError: '',
       editAccountError: '',
       toBeEdited: null,
+      currentPage: 1,
+      itemsPerPage: 10,
     }
   }
 
@@ -46,7 +48,7 @@ export default class Users extends Component {
         this.setState({ editAccountError: "Username cannot be empty" });
         return;
       } else if(username.length < 6) {
-        this.setState({ editAccountError: "Username has to be atleast 6 characters" })
+        this.setState({ editAccountError: "Username has to be at least 6 characters" })
         return;
       } else if(username.length > 30) {
         this.setState({ editAccountError: "Username has to be atmost 30 characters" })
@@ -83,7 +85,7 @@ export default class Users extends Component {
         }
   
         if(previousPassword.length < 6 || newPassword.length < 6 || confirmNewPassword.length < 6) {
-          this.setState({ editAccountError: "Password has to be atleast 6 characters" });
+          this.setState({ editAccountError: "Password has to be at least 6 characters" });
           return 
         }
     
@@ -105,7 +107,9 @@ export default class Users extends Component {
         .then((res) => {
           const { result } = res.data;
 
-          alert(`Edit was successful`)
+          Modal.success({
+            content: 'User has been successfully updated',
+          });
           
           const index = users.indexOf(toBeEdited);
 
@@ -136,7 +140,9 @@ export default class Users extends Component {
           const index = users.indexOf(user);
           const updatedUsers = [...users.slice(0, index), ...users.slice(index + 1)];
           this.setState({ users: updatedUsers, count: updatedUsers.length });
-          alert(`Deletion was successful`)
+          Modal.success({
+            content: 'User has been successfully deleted.',
+          });
         })
         .catch((err) => {
           console.log(err.response.data);
@@ -152,7 +158,7 @@ export default class Users extends Component {
       this.setState({ addAccountError: "Username cannot be empty" })
       return;
     } else if(username.length < 6) {
-      this.setState({ addAccountError: "Username has to be atleast 6 characters" })
+      this.setState({ addAccountError: "Username has to be at least 6 characters" })
       return;
     } else if(username.length > 30) {
       this.setState({ addAccountError: "Username has to be atmost 30 characters" })
@@ -189,7 +195,7 @@ export default class Users extends Component {
   }
 
   render() {
-    const { users, searchValue, count, addAccountVisible, addAccountError, editAccountVisible, editAccountError, toBeEdited } = this.state;
+    const { users, searchValue, count, addAccountVisible, addAccountError, editAccountVisible, editAccountError, toBeEdited, currentPage, itemsPerPage } = this.state;
 
     return <div id="users-page">
     <div className="header">
@@ -197,7 +203,7 @@ export default class Users extends Component {
         <input 
           className="search-input" 
           placeholder="Search" 
-          onChange={(e) => this.setState({ searchValue: e.target.value })} 
+          onChange={(e) => this.setState({ searchValue: e.target.value.trim() })} 
           value={searchValue} 
         />
         <button 
@@ -222,7 +228,10 @@ export default class Users extends Component {
       <tbody>
         {
           // maps each user to the table
-          users.filter((user) => user.username.toLowerCase().includes(searchValue.toLowerCase())).map((user) => (
+          users
+            .filter((user) => user.username.toLowerCase().includes(searchValue.toLowerCase()))
+            .slice((currentPage - 1) * itemsPerPage, (currentPage - 1) * itemsPerPage + itemsPerPage)
+            .map((user) => (
               <tr>
                 <td>{user.username}</td>
                 <td>{user.userType}</td>
@@ -247,6 +256,12 @@ export default class Users extends Component {
         }
       </tbody>
     </table>
+    <Pagination 
+      current={currentPage} 
+      pageSize={itemsPerPage} 
+      total={users.filter((item) => item.username.toLowerCase().includes(searchValue.toLowerCase())).length} 
+      onChange={(page) => this.setState({ currentPage: page })} 
+    />
     <AddAccount 
       visible={addAccountVisible} 
       onOk={(username) => this.addAccount(username)} 
